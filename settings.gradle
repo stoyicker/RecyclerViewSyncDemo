@@ -1,1 +1,1 @@
-include ':demo', ':lazyRecyclerAdapter'
+include ':demo', ':lazyRecyclerView'
