@@ -1,0 +1,49 @@
+import com.android.builder.core.BuilderConstants
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
+    }
+}
+
+apply plugin: 'com.android.library'
+
+dependencies {
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+}
+
+android {
+
+    compileSdkVersion 21
+    buildToolsVersion "22.0.1"
+
+    productFlavors {
+        standard {
+            minSdkVersion 8
+            targetSdkVersion 22
+            versionCode 1
+            versionName "0.0.1"
+        }
+    }
+}
+
+// from http://stackoverflow.com/a/19484146/115145
+
+android.libraryVariants.all { variant ->
+    def name = variant.buildType.name
+    if (!name.equals(BuilderConstants.MAIN)) {
+        return; // Skip uninteresting builds.
+    }
+    def task = project.tasks.create "jar${name.capitalize()}", Jar
+    task.dependsOn variant.javaCompile
+    task.from variant.javaCompile.destinationDir
+}
+
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.github.stoyicker'
+version = '0.0.1'

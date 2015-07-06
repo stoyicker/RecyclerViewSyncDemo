@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    productFlavors {
+        standard {
+            applicationId "org.jorge.lazyrecycleradapterdemo"
+            minSdkVersion 8
+            targetSdkVersion 22
+            versionCode 1
+            versionName "0"
+            multiDexEnabled = false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    buildTypes {
+        demo {
+            minifyEnabled true
+        }
+    }
+
+    lintOptions {
+        absolutePaths true
+
+        warningsAsErrors true
+
+        enable 'IconExpectedSize', 'LogConditional', 'NegativeMargin', 'NewerVersionAvailable',
+                'SelectableText', 'TypographyQuotes'
+    }
+}
+
+dependencies {
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile project(':lazyRecyclerAdapter')
+}
