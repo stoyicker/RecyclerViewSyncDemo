@@ -7,33 +7,51 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/recycler_view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/traditional_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="gone"/>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:titleTextAppearance="@style/ToolbarTitle"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-        <org.jorge.lazyRecyclerView.LazyRecyclerView
-            android:id="@+id/lazy_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@android:id/empty"
+        <LinearLayout
+            android:id="@+id/recycler_view_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?android:attr/windowBackground"
-            android:gravity="center"
-            android:text="@string/no_items"
-            android:textColor="@android:color/black"/>
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/traditional_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fadeScrollbars="true"
+                android:scrollbars="vertical"
+                android:visibility="gone"/>
+
+            <org.jorge.lazyRecyclerView.LazyRecyclerView
+                android:id="@+id/lazy_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fadeScrollbars="true"
+                android:scrollbars="vertical"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@android:id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/windowBackground"
+                android:gravity="center"
+                android:text="@string/no_items"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

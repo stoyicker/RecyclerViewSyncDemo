@@ -1,13 +1,15 @@
 package org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import org.jorge.lazyRecyclerView.LazyRecyclerAdapter;
@@ -27,7 +29,7 @@ import butterknife.OnClick;
 /**
  * @author Jorge Antonio Diaz-Benito Soriano (github.com/Stoyicker).
  */
-public final class DemoActivity extends Activity {
+public final class DemoActivity extends AppCompatActivity {
 
     private List<DemoDataModel> mRecyclerItems = new ArrayList<>();
 
@@ -44,13 +46,25 @@ public final class DemoActivity extends Activity {
     @Bind(R.id.main_content)
     View mRootView;
 
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        initActionBar();
         initRecyclerViews();
+    }
+
+    private void initActionBar() {
+        setSupportActionBar(mToolbar);
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.app_name));
+        }
     }
 
     private void initRecyclerViews() {
