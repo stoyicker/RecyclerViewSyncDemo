@@ -5,11 +5,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import org.jorge.lazyrecycleradapterdemo.R;
+import org.jorge.LazyRecyclerAdapter;
+import org.jorge.lazyrecyclerviewdemo.R;
+import org.jorge.lazyrecyclerviewdemo.ui.adapter.DemoLazyRecyclerAdapter;
 import org.jorge.lazyrecyclerviewdemo.ui.adapter.TraditionalRecyclerAdapter;
 import org.jorge.lazyrecyclerviewdemo.ui.datamodel.DemoDataModel;
 import org.jorge.lazyrecyclerviewdemo.ui.datamodel.DemoDataModelFactory;
@@ -32,7 +35,8 @@ public final class DemoActivity extends Activity {
     RecyclerView mTraditionalRecyclerView;
     @Bind(R.id.lazy_recycler_view)
     RecyclerView mLazyRecyclerView;
-    RecyclerView.Adapter mTraditionalAdapter, mLazyAdapter;
+    RecyclerView.Adapter mTraditionalAdapter;
+    LazyRecyclerAdapter mLazyAdapter;
 
     @Bind(android.R.id.empty)
     View mEmptyView;
@@ -51,21 +55,22 @@ public final class DemoActivity extends Activity {
 
     private void initRecyclerViews() {
         final Context context = getApplicationContext();
+        final RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
 
         mTraditionalRecyclerView.setAdapter(mTraditionalAdapter = new TraditionalRecyclerAdapter(mRecyclerItems));
         mTraditionalRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mTraditionalRecyclerView.setItemAnimator(itemAnimator);
 
-        //TODO Make this a Lazy adapter
-        mLazyRecyclerView.setAdapter(mLazyAdapter = new TraditionalRecyclerAdapter(mRecyclerItems));
+        mLazyRecyclerView.setAdapter(mLazyAdapter = new DemoLazyRecyclerAdapter(mRecyclerItems));
         mLazyRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mLazyRecyclerView.setItemAnimator(itemAnimator);
     }
 
     @OnClick(R.id.fab_add)
     public void addNewItem() {
         mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
         mTraditionalAdapter.notifyItemInserted(mTraditionalAdapter.getItemCount() - 1);
-        mLazyAdapter.notifyItemInserted(mLazyAdapter.getItemCount() - 1); //TODO Use the lazy
-        // dedicated method instead
+        mLazyAdapter.notifyItemInserted(mLazyAdapter.getItemAmount() - 1);
         updateItemsVisibility(Boolean.TRUE);
         Snackbar.make(mRootView, R.string.snack_bar_text_new_message, Snackbar.LENGTH_SHORT)
                 .show();

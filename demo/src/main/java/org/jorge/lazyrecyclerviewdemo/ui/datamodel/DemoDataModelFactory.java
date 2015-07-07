@@ -7,9 +7,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class DemoDataModelFactory {
 
-    private static AtomicInteger DATA_MODEL_COUNTER = new AtomicInteger(0);
+    private static AtomicInteger DATA_MODEL_COUNTER = new AtomicInteger(-1);
 
     public static DemoDataModel createDemoDataModel() {
-        return new DemoDataModel(DATA_MODEL_COUNTER.addAndGet(1) + "");
+        return new DemoDataModel("Index " + DATA_MODEL_COUNTER.addAndGet(1));
     }
 }

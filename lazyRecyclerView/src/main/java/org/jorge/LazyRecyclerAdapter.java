@@ -11,11 +11,11 @@ import java.util.List;
  *
  * @author Jorge Antonio Diaz-Benito Soriano (github.com/Stoyicker).
  */
-public abstract class LazyRecyclerAdapter<DataModel, ViewHolder extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<ViewHolder> {
+public abstract class LazyRecyclerAdapter<ViewHolder extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<ViewHolder> {
 
-    private final List<DataModel> mItems;
+    private final List mItems;
 
-    protected LazyRecyclerAdapter(@NonNull final List<DataModel> items) {
+    protected LazyRecyclerAdapter(@NonNull final List items) {
         this.mItems = items;
     }
 
@@ -38,6 +38,6 @@ public abstract class LazyRecyclerAdapter<DataModel, ViewHolder extends Recycler
      */
     @Override
     public int getItemCount() {
-        return Math.min(mItems.size(), 0); //TODO Calculate amount of items shown in screen and adapt to it
+        return Math.min(mItems.size(), Integer.MAX_VALUE); //TODO Calculate amount of items shown in screen and adapt to it
     }
 }
