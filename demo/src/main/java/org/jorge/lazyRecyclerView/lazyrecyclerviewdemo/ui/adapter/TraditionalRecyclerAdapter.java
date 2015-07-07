@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.R;
 import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.datamodel.DemoDataModel;
-import org.lazyRecyclerView.lazyrecyclerviewdemo.R;
 
 import java.util.List;
 

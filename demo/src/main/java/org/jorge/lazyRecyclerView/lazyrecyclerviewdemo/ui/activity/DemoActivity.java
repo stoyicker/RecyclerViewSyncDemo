@@ -55,15 +55,14 @@ public final class DemoActivity extends Activity {
 
     private void initRecyclerViews() {
         final Context context = getApplicationContext();
-        final RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
 
         mTraditionalRecyclerView.setAdapter(mTraditionalAdapter = new TraditionalRecyclerAdapter(mRecyclerItems));
         mTraditionalRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mTraditionalRecyclerView.setItemAnimator(itemAnimator);
+        mTraditionalRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mLazyRecyclerView.setAdapter(mLazyAdapter = new DemoLazyRecyclerAdapter(mRecyclerItems));
         mLazyRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mLazyRecyclerView.setItemAnimator(itemAnimator);
+        mLazyRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     @OnClick(R.id.fab_add)
