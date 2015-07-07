@@ -1,4 +1,4 @@
-package org.jorge.lazyrecyclerviewdemo.ui.activity;
+package org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,12 +10,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import org.jorge.LazyRecyclerAdapter;
-import org.jorge.lazyrecyclerviewdemo.R;
-import org.jorge.lazyrecyclerviewdemo.ui.adapter.DemoLazyRecyclerAdapter;
-import org.jorge.lazyrecyclerviewdemo.ui.adapter.TraditionalRecyclerAdapter;
-import org.jorge.lazyrecyclerviewdemo.ui.datamodel.DemoDataModel;
-import org.jorge.lazyrecyclerviewdemo.ui.datamodel.DemoDataModelFactory;
+import org.jorge.lazyRecyclerView.LazyRecyclerAdapter;
+import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.R;
+import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.adapter.DemoLazyRecyclerAdapter;
+import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.adapter.TraditionalRecyclerAdapter;
+import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.datamodel.DemoDataModel;
+import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.datamodel.DemoDataModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;

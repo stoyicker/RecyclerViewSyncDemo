@@ -1,4 +1,4 @@
-package org.jorge.lazyrecyclerviewdemo.ui.datamodel;
+package org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.datamodel;
 
 /**
  * @author Jorge Antonio Diaz-Benito Soriano (github.com/Stoyicker).

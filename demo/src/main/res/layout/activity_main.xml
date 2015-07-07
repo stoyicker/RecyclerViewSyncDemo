@@ -19,7 +19,7 @@
             android:layout_weight="1"
             android:visibility="gone"/>
 
-        <org.jorge.LazyRecyclerView
+        <org.lazyRecyclerView.LazyRecyclerView
             android:id="@+id/lazy_recycler_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"

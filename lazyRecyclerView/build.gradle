@@ -1,18 +1,5 @@
 apply plugin: 'com.android.library'
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
-    }
-}
-
-dependencies {
-    compile 'com.android.support:recyclerview-v7:22.2.0'
-}
-
 android {
 
     compileSdkVersion 22
@@ -40,4 +27,8 @@ android {
         enable 'IconExpectedSize', 'LogConditional', 'NegativeMargin', 'NewerVersionAvailable',
                 'SelectableText', 'TypographyQuotes'
     }
+}
+
+dependencies {
+    compile 'com.android.support:recyclerview-v7:22.2.0'
 }

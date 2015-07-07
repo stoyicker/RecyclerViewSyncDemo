@@ -1,4 +1,4 @@
-package org.jorge.lazyrecyclerviewdemo.ui.datamodel;
+package org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.datamodel;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
