@@ -13,7 +13,8 @@
         tools:ignore="UnusedAttribute">
 
         <activity
-            android:name="org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.activity.DemoActivity">
+            android:name="org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.activity.DemoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

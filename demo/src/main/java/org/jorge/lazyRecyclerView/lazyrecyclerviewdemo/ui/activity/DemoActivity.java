@@ -1,7 +1,9 @@
 package org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.activity;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -31,6 +33,7 @@ import butterknife.OnClick;
  */
 public final class DemoActivity extends AppCompatActivity {
 
+    private static final String KEY_ITEMS = "KEY_ITEMS";
     private List<DemoDataModel> mRecyclerItems = new ArrayList<>();
 
     @Bind(R.id.traditional_recycler_view)
@@ -79,6 +82,14 @@ public final class DemoActivity extends AppCompatActivity {
         mLazyRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
+    @Override
+    public void onConfigurationChanged(final Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        mTraditionalAdapter.notifyDataSetChanged();
+        mLazyAdapter.notifyDataSetChanged();
+    }
+
     @OnClick(R.id.fab_add)
     public void addNewItem() {
         mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
@@ -112,5 +123,23 @@ public final class DemoActivity extends AppCompatActivity {
                 mLazyRecyclerView.setVisibility(View.GONE);
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull final Bundle outState) {
+        outState.putParcelableArrayList(KEY_ITEMS, (ArrayList<? extends Parcelable>) mRecyclerItems);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        final List<DemoDataModel> items = savedInstanceState.getParcelableArrayList(KEY_ITEMS);
+
+        if (items != null) {
+            mRecyclerItems.addAll(items);
+        }
+
+        super.onRestoreInstanceState(savedInstanceState);
     }
 }
