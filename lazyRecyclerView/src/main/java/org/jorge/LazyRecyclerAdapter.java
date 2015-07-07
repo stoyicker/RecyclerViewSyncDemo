@@ -1,5 +1,6 @@
 package org.jorge;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
@@ -14,8 +15,19 @@ public abstract class LazyRecyclerAdapter<DataModel, ViewHolder extends Recycler
 
     private final List<DataModel> mItems;
 
-    protected LazyRecyclerAdapter(final List<DataModel> items) {
+    protected LazyRecyclerAdapter(@NonNull final List<DataModel> items) {
         this.mItems = items;
+    }
+
+    /**
+     * Intended to allow the replacement of the information provided by {@link RecyclerView
+     * .Adapter#getItemCount}
+     *
+     * @return {@link Integer} The total number of items that this adapter holds at the moment of
+     * this call.
+     */
+    public int getItemAmount() {
+        return mItems.size();
     }
 
     /**
@@ -25,7 +37,7 @@ public abstract class LazyRecyclerAdapter<DataModel, ViewHolder extends Recycler
      * @return The total number of items from this adapter that should be loaded into view.
      */
     @Override
-    public final int getItemCount() {
+    public int getItemCount() {
         return Math.min(mItems.size(), 0); //TODO Calculate amount of items shown in screen and adapt to it
     }
 }

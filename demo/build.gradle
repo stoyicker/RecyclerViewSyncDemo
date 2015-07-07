@@ -23,6 +23,7 @@ android {
     buildTypes {
         demo {
             minifyEnabled true
+            proguardFiles 'proguard-rules.pro'
         }
     }
 
@@ -39,5 +40,8 @@ android {
 dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
+
+    compile 'com.jakewharton:butterknife:7.0.1'
+
     compile project(':lazyRecyclerView')
 }

@@ -14,27 +14,25 @@ public class LazyRecyclerView extends RecyclerView {
 
     private Integer mLastY;
 
-    public LazyRecyclerView(@NonNull Context context, @NonNull final LinearLayoutManager layoutManager) {
-        this(context, null, layoutManager);
+    public LazyRecyclerView(@NonNull Context context) {
+        this(context, null);
     }
 
-    public LazyRecyclerView(@NonNull final Context context, @Nullable final AttributeSet attrs, @NonNull final LinearLayoutManager layoutManager) {
-        this(context, attrs, 0, layoutManager);
+    public LazyRecyclerView(@NonNull final Context context, @Nullable final AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
     /**
      * Sets an scroll listener to detect gestures that require loading more data.
      *
-     * @param context       {@link Context}
-     * @param attrs         {@link AttributeSet}
-     * @param defStyle      {@link Integer}
-     * @param layoutManager {@link LinearLayoutManager} In order to find which items are shown, the layout manager is required to be of (or extend) this type.
+     * @param context  {@link Context}
+     * @param attrs    {@link AttributeSet}
+     * @param defStyle {@link Integer}
      */
-    public LazyRecyclerView(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyle, @NonNull final LinearLayoutManager layoutManager) {
+    public LazyRecyclerView(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
 
         this.mLastY = 0;
-        this.setLayoutManager(layoutManager);
 
 //        addOnScrollListener(new OnScrollListener() {
 //            @Override
@@ -58,5 +56,14 @@ public class LazyRecyclerView extends RecyclerView {
 //                mLastY += dy;
 //            }
 //        });
+    }
+
+    @Override
+    public void setLayoutManager(@NonNull final LayoutManager layout) {
+        if (!(layout instanceof LinearLayoutManager)) {
+            throw new IllegalArgumentException("LazyRecylerView only supports layout managers of " +
+                    "type LinearLayoutManager (and descendants).");
+        }
+        super.setLayoutManager(layout);
     }
 }

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LazyRecyclerViewDemo</string>
+    <string name="no_items">No items.</string>
+    <string name="snack_bar_text_new_message">New item added.</string>
 </resources>
