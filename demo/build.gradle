@@ -38,5 +38,6 @@ android {
 
 dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
     compile project(':lazyRecyclerView')
 }
