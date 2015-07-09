@@ -1,4 +1,4 @@
-package org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.activity;
+package org.jorge.lazyrecyclerview.demo.ui.activity;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -14,12 +14,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import org.jorge.lazyRecyclerView.LazyRecyclerAdapter;
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.R;
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.datamodel.DemoDataModel;
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.datamodel.DemoDataModelFactory;
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.adapter.DemoLazyRecyclerAdapter;
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.adapter.TraditionalRecyclerAdapter;
+import org.jorge.lazyrecyclerview.LazyRecyclerAdapter;
+import org.jorge.lazyrecyclerview.demo.R;
+import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModel;
+import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModelFactory;
+import org.jorge.lazyrecyclerview.demo.ui.adapter.DemoLazyRecyclerAdapter;
+import org.jorge.lazyrecyclerview.demo.ui.adapter.TraditionalRecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,9 +98,23 @@ public final class DemoActivity extends AppCompatActivity {
         mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
         mTraditionalAdapter.notifyItemInserted(mTraditionalAdapter.getItemCount() - 1);
         mLazyAdapter.notifyItemInserted(mLazyAdapter.getItemAmount() - 1);
-        updateItemsVisibility(Boolean.TRUE);
-        Snackbar.make(mRootView, R.string.snack_bar_text_new_message, Snackbar.LENGTH_SHORT)
+        if (mRecyclerItems.size() == 1) {
+            updateItemsVisibility(Boolean.TRUE);
+        }
+        Snackbar.make(mRootView, R.string.snack_bar_text_item_added, Snackbar.LENGTH_SHORT)
                 .show();
+    }
+
+    @OnClick(R.id.fab_remove)
+    public void removeItem() {
+        if (!mRecyclerItems.isEmpty()) {
+            mRecyclerItems.remove(mRecyclerItems.size() - 1);
+            mTraditionalAdapter.notifyItemRemoved(mTraditionalAdapter.getItemCount());
+            mLazyAdapter.notifyItemRemoved(mLazyAdapter.getItemAmount());
+            updateItemsVisibility(!mRecyclerItems.isEmpty());
+            Snackbar.make(mRootView, R.string.snack_bar_text_item_removed, Snackbar.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     private void updateItemsVisibility(@NonNull final Boolean recyclerViewHasItems) {

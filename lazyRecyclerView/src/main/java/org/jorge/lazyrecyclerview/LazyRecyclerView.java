@@ -1,4 +1,4 @@
-package org.jorge.lazyRecyclerView;
+package org.jorge.lazyrecyclerview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

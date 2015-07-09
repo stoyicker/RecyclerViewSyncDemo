@@ -1,4 +1,4 @@
-package org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.datamodel;
+package org.jorge.lazyrecyclerview.demo.datamodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;

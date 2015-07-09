@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-    package="org.jorge.lazyRecyclerView.lazyrecyclerviewdemo"
+    package="org.jorge.lazyrecyclerview.demo"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -13,7 +13,7 @@
         tools:ignore="UnusedAttribute">
 
         <activity
-            android:name="org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.activity.DemoActivity"
+            android:name="org.jorge.lazyrecyclerview.demo.ui.activity.DemoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

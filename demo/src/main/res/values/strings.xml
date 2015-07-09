@@ -2,7 +2,8 @@
 <resources>
     <string name="app_name">LazyRecyclerViewDemo</string>
     <string name="no_items">No items.</string>
-    <string name="snack_bar_text_new_message">New item added.</string>
+    <string name="snack_bar_text_item_added">One item added.</string>
+    <string name="snack_bar_text_item_removed">One item removed.</string>
     <plurals name="stat_desc_ocv">
         <item quantity="one">onCreateViewHolder: %d call</item>
         <item quantity="other">onCreateViewHolder: %d calls</item>

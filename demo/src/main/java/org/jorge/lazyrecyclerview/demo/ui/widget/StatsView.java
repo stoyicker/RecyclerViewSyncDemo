@@ -1,16 +1,18 @@
-package org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.widget;
+package org.jorge.lazyrecyclerview.demo.ui.widget;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.R;
+import org.jorge.lazyrecyclerview.demo.R;
+import org.jorge.lazyrecyclerview.demo.ui.extension.PushBehavior;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,13 +31,14 @@ public final class StatsView extends LinearLayout {
 
     public StatsView(@NonNull final Context context, final AttributeSet attrs) {
         super(context, attrs);
+        if (!isInEditMode()) {
+            mResources = context.getResources();
 
-        mResources = context.getResources();
+            LayoutInflater.from(context).inflate(R.layout.widget_stats_view, this);
+            ButterKnife.bind(this);
 
-        LayoutInflater.from(context).inflate(R.layout.widget_stats_view, this);
-        ButterKnife.bind(this);
-
-        init(context, attrs);
+            init(context, attrs);
+        }
     }
 
     private void init(@NonNull final Context context, final AttributeSet attrs) {

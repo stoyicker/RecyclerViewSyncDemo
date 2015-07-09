@@ -1,4 +1,4 @@
-package org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.adapter;
+package org.jorge.lazyrecyclerview.demo.ui.adapter;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.jorge.lazyRecyclerView.LazyRecyclerAdapter;
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.R;
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.datamodel.DemoDataModel;
+import org.jorge.lazyrecyclerview.LazyRecyclerAdapter;
+import org.jorge.lazyrecyclerview.demo.R;
+import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModel;
 
 import java.util.List;
 
