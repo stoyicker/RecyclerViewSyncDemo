@@ -3,6 +3,7 @@
     android:id="@+id/main_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:stats="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -23,35 +24,57 @@
             android:id="@+id/recycler_view_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/traditional_recycler_view"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fadeScrollbars="true"
-                android:scrollbars="vertical"
-                android:visibility="gone"/>
+                android:orientation="vertical">
 
-            <org.jorge.lazyRecyclerView.LazyRecyclerView
-                android:id="@+id/lazy_recycler_view"
+                <org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.widget.StatsView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    stats:sv_title="@string/stat_title_standard"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/traditional_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fadeScrollbars="true"
+                    android:scrollbars="vertical"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fadeScrollbars="true"
-                android:scrollbars="vertical"
-                android:visibility="gone"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@android:id/empty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?android:attr/windowBackground"
-                android:gravity="center"
-                android:text="@string/no_items"
-                android:textColor="@android:color/black"/>
+                <org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.widget.StatsView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    stats:sv_title="@string/stat_title_lazy"/>
+
+                <org.jorge.lazyRecyclerView.LazyRecyclerView
+                    android:id="@+id/lazy_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fadeScrollbars="true"
+                    android:scrollbars="vertical"/>
+            </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/windowBackground"
+            android:gravity="center"
+            android:text="@string/no_items"
+            android:textColor="@android:color/black"/>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -64,6 +87,6 @@
         android:src="@drawable/ic_add"
         app:borderWidth="0dp"
         app:fabSize="normal"
-        app:layout_anchor="@id/recycler_view_container"
+        app:layout_anchor="@+id/main_content"
         app:layout_anchorGravity="bottom|left|start"/>
 </android.support.design.widget.CoordinatorLayout>

@@ -17,4 +17,14 @@
     <style name="ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="StatsText">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="CyanBackground">
+        <item name="background">@color/material_cyan_500</item>
+    </style>
 </resources>

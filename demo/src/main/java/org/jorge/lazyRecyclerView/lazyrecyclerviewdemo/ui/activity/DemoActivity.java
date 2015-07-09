@@ -16,10 +16,10 @@ import android.view.View;
 
 import org.jorge.lazyRecyclerView.LazyRecyclerAdapter;
 import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.R;
+import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.datamodel.DemoDataModel;
+import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.datamodel.DemoDataModelFactory;
 import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.adapter.DemoLazyRecyclerAdapter;
 import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.adapter.TraditionalRecyclerAdapter;
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.datamodel.DemoDataModel;
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.datamodel.DemoDataModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +51,9 @@ public final class DemoActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+
+    @Bind(R.id.recycler_view_container)
+    View mRecyclerViewContainer;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -105,22 +108,16 @@ public final class DemoActivity extends AppCompatActivity {
             if (mEmptyView.getVisibility() != View.GONE) {
                 mEmptyView.setVisibility(View.GONE);
             }
-            if (mTraditionalRecyclerView.getVisibility() != View.VISIBLE) {
-                mTraditionalRecyclerView.setVisibility(View.VISIBLE);
-            }
-            if (mLazyRecyclerView.getVisibility() != View.VISIBLE) {
-                mLazyRecyclerView.setVisibility(View.VISIBLE);
+            if (mRecyclerViewContainer.getVisibility() != View.VISIBLE) {
+                mRecyclerViewContainer.setVisibility(View.VISIBLE);
             }
         }
         else {
             if (mEmptyView.getVisibility() != View.VISIBLE) {
                 mEmptyView.setVisibility(View.VISIBLE);
             }
-            if (mTraditionalRecyclerView.getVisibility() != View.GONE) {
-                mTraditionalRecyclerView.setVisibility(View.GONE);
-            }
-            if (mLazyRecyclerView.getVisibility() != View.GONE) {
-                mLazyRecyclerView.setVisibility(View.GONE);
+            if (mRecyclerViewContainer.getVisibility() != View.GONE) {
+                mRecyclerViewContainer.setVisibility(View.GONE);
             }
         }
     }

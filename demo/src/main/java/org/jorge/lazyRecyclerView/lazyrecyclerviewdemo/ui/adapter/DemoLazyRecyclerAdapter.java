@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import org.jorge.lazyRecyclerView.LazyRecyclerAdapter;
 import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.R;
-import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.ui.datamodel.DemoDataModel;
+import org.jorge.lazyRecyclerView.lazyrecyclerviewdemo.datamodel.DemoDataModel;
 
 import java.util.List;
 
