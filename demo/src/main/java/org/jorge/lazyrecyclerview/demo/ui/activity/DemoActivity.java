@@ -2,6 +2,7 @@ package org.jorge.lazyrecyclerview.demo.ui.activity;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -20,11 +21,13 @@ import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModel;
 import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModelFactory;
 import org.jorge.lazyrecyclerview.demo.ui.adapter.DemoLazyRecyclerAdapter;
 import org.jorge.lazyrecyclerview.demo.ui.adapter.TraditionalRecyclerAdapter;
+import org.jorge.lazyrecyclerview.demo.ui.widget.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.BindInt;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -55,14 +58,25 @@ public final class DemoActivity extends AppCompatActivity {
     @Bind(R.id.recycler_view_container)
     View mRecyclerViewContainer;
 
+    @Bind(R.id.action_menu)
+    FloatingActionMenu mActionMenu;
+
+    @BindInt(R.integer.bulk_add_amount)
+    int mBulkAddAmount;
+
+    Resources mResources;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        mResources = getApplicationContext().getResources();
+
         initActionBar();
         initRecyclerViews();
+        initActionMenu();
     }
 
     private void initActionBar() {
@@ -71,6 +85,21 @@ public final class DemoActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setTitle(getString(R.string.app_name));
         }
+    }
+
+    private void initActionMenu() {
+        mActionMenu.setOnItemClickListener(0, new View.OnClickListener() {
+            @Override
+            public void onClick(@NonNull final View v) {
+                clearAllItems();
+            }
+        });
+        mActionMenu.setOnItemClickListener(1, new View.OnClickListener() {
+            @Override
+            public void onClick(@NonNull final View v) {
+                bulkAddItems();
+            }
+        });
     }
 
     private void initRecyclerViews() {
@@ -101,7 +130,8 @@ public final class DemoActivity extends AppCompatActivity {
         if (mRecyclerItems.size() == 1) {
             updateItemsVisibility(Boolean.TRUE);
         }
-        Snackbar.make(mRootView, R.string.snack_bar_text_item_added, Snackbar.LENGTH_SHORT)
+        Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, 1), Snackbar
+                .LENGTH_SHORT)
                 .show();
     }
 
@@ -115,6 +145,28 @@ public final class DemoActivity extends AppCompatActivity {
             Snackbar.make(mRootView, R.string.snack_bar_text_item_removed, Snackbar.LENGTH_SHORT)
                     .show();
         }
+    }
+
+    private void clearAllItems() {
+        mRecyclerItems.clear();
+        mTraditionalAdapter.notifyDataSetChanged();
+        mLazyAdapter.notifyDataSetChanged();
+        Snackbar.make(mRootView, R.string.snack_bar_text_items_cleared, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    private void bulkAddItems() {
+        final Integer initialIndex = mRecyclerItems.size() - 1, finalIndex =
+                initialIndex + mBulkAddAmount;
+        for (Integer i = 0; i < mBulkAddAmount; i++)
+            mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
+        mTraditionalAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
+        mLazyAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
+        if (mRecyclerItems.size() == mBulkAddAmount) {
+            updateItemsVisibility(Boolean.TRUE);
+        }
+        Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, mBulkAddAmount, mBulkAddAmount), Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     private void updateItemsVisibility(@NonNull final Boolean recyclerViewHasItems) {

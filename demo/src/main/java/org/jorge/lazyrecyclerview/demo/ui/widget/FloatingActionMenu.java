@@ -26,9 +26,13 @@ import butterknife.OnClick;
 public class FloatingActionMenu extends LinearLayout {
 
     private Boolean isExpanded = Boolean.FALSE;
+
     @Bind({R.id.fab_index_zero, R.id.fab_index_one})
     View[] mEntries;
+
     private final Context mContext;
+
+    private OnClickListener[] mListeners;
 
     public FloatingActionMenu(@NonNull final Context context, final AttributeSet attrs) {
         super(context, attrs);
@@ -55,6 +59,8 @@ public class FloatingActionMenu extends LinearLayout {
             a.recycle();
         }
 
+        mListeners = new OnClickListener[mEntries.length];
+
         if (isExpanded) {
             toggleExpand();
         }
@@ -63,7 +69,7 @@ public class FloatingActionMenu extends LinearLayout {
     @OnClick(R.id.fab_control)
     void toggleExpand() {
         if (isExpanded) {
-            Integer delayMs = 0;
+            Integer delayMs = 50;
             for (final View x : mEntries) {
                 final Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.scale_from_zero_to_regular_size_from_center);
                 anim.setAnimationListener(new Animation.AnimationListener() {
@@ -87,7 +93,7 @@ public class FloatingActionMenu extends LinearLayout {
                     }
                 });
                 anim.setStartOffset(delayMs);
-                delayMs += 50;
+                delayMs -= 50;
                 x.startAnimation(anim);
             }
         }
@@ -115,5 +121,26 @@ public class FloatingActionMenu extends LinearLayout {
             }
         }
         isExpanded = !isExpanded;
+    }
+
+    @OnClick(R.id.fab_index_zero)
+    void onZeroClick() {
+        triggerClickOnButton(0);
+    }
+
+    @OnClick(R.id.fab_index_one)
+    void onOneClick() {
+        triggerClickOnButton(1);
+    }
+
+    public void setOnItemClickListener(@NonNull final Integer actionIndex, final OnClickListener
+            listener) {
+        mListeners[actionIndex] = listener;
+    }
+
+    private void triggerClickOnButton(@NonNull final Integer index) {
+        if (mListeners[index] != null) {
+            mListeners[index].onClick(mEntries[index]);
+        }
     }
 }

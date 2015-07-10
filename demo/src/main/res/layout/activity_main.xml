@@ -110,6 +110,7 @@
     </LinearLayout>
 
     <org.jorge.lazyrecyclerview.demo.ui.widget.FloatingActionMenu
+        android:id="@+id/action_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_anchor="@id/main_content"
