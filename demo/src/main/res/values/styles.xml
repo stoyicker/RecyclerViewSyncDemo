@@ -27,4 +27,8 @@
     <style name="RedAccent">
         <item name="colorAccent">@color/material_red_500</item>
     </style>
+
+    <style name="AmberAccent">
+        <item name="colorAccent">@color/material_amber_500</item>
+    </style>
 </resources>

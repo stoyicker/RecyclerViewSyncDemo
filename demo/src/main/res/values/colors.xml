@@ -3,4 +3,5 @@
     <color name="material_indigo_500">#3f51b5</color>
     <color name="material_indigo_a200">#536dfe</color>
     <color name="material_red_500">#e51c23</color>
+    <color name="material_amber_500">#ffc107</color>
 </resources>
