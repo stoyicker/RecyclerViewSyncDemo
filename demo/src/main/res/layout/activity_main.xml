@@ -23,7 +23,7 @@
             android:id="@+id/recycler_view_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/standard_margin"
             android:baselineAligned="false"
             android:orientation="horizontal"
             android:visibility="gone">
@@ -81,8 +81,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_anchor="@+id/main_content"
-        app:layout_anchorGravity="bottom|left|start"
+        app:layout_anchor="@id/main_content"
+        app:layout_anchorGravity="bottom|start"
         app:layout_behavior="org.jorge.lazyrecyclerview.demo.ui.extension.PushBehavior">
 
         <android.support.design.widget.FloatingActionButton
@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/standard_margin"
             android:scaleType="center"
             android:src="@drawable/ic_add"
             app:borderWidth="0dp"
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/standard_margin"
             android:scaleType="center"
             android:src="@drawable/ic_remove"
             android:theme="@style/RedAccent"
@@ -109,17 +109,9 @@
             app:fabSize="normal"/>
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_more"
+    <org.jorge.lazyrecyclerview.demo.ui.widget.FloatingActionMenu
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="8dp"
-        android:scaleType="center"
-        android:src="@drawable/ic_dots_horizontal"
-        android:theme="@style/AmberAccent"
-        app:borderWidth="0dp"
-        app:fabSize="normal"
-        app:layout_anchor="@+id/main_content"
-        app:layout_anchorGravity="bottom|right|end"/>
+        app:layout_anchor="@id/main_content"
+        app:layout_anchorGravity="bottom|end"/>
 </android.support.design.widget.CoordinatorLayout>

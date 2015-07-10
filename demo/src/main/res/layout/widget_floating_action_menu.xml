@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_index_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin"
+        android:scaleType="center"
+        android:src="@drawable/ic_cart"
+        android:visibility="gone"
+        app:borderWidth="0dp"
+        app:fabSize="normal"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_index_zero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin"
+        android:scaleType="center"
+        android:src="@drawable/ic_delete"
+        android:theme="@style/RedAccent"
+        android:visibility="gone"
+        app:borderWidth="0dp"
+        app:fabSize="normal"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin"
+        android:scaleType="center"
+        android:src="@drawable/ic_dots_horizontal"
+        android:theme="@style/AmberAccent"
+        app:borderWidth="0dp"
+        app:fabSize="normal"/>
+</LinearLayout>

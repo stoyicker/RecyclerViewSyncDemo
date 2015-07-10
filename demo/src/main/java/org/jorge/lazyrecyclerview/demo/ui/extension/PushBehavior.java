@@ -15,6 +15,9 @@ import android.widget.LinearLayout;
  */
 public class PushBehavior extends CoordinatorLayout.Behavior<LinearLayout> {
 
+    public PushBehavior() {
+    }
+
     public PushBehavior(@NonNull final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
