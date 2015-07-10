@@ -107,17 +107,19 @@
             android:theme="@style/RedAccent"
             app:borderWidth="0dp"
             app:fabSize="normal"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="8dp"
-            android:scaleType="center"
-            android:src="@drawable/ic_dots_horizontal"
-            android:theme="@style/AmberAccent"
-            app:borderWidth="0dp"
-            app:fabSize="normal"/>
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="8dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_dots_horizontal"
+        android:theme="@style/AmberAccent"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/main_content"
+        app:layout_anchorGravity="bottom|right|end"/>
 </android.support.design.widget.CoordinatorLayout>
