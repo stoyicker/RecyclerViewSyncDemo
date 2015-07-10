@@ -3,7 +3,6 @@
     android:id="@+id/main_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:stats="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -38,7 +37,7 @@
                 <org.jorge.lazyrecyclerview.demo.ui.widget.StatsView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    stats:sv_title="@string/stat_title_standard"/>
+                    app:sv_title="@string/stat_title_standard"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/traditional_recycler_view"
@@ -57,7 +56,7 @@
                 <org.jorge.lazyrecyclerview.demo.ui.widget.StatsView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    stats:sv_title="@string/stat_title_lazy"/>
+                    app:sv_title="@string/stat_title_lazy"/>
 
                 <org.jorge.lazyrecyclerview.LazyRecyclerView
                     android:id="@+id/lazy_recycler_view"
@@ -105,8 +104,8 @@
             android:layout_margin="8dp"
             android:scaleType="center"
             android:src="@drawable/ic_remove"
+            android:theme="@style/RedAccent"
             app:borderWidth="0dp"
-            app:fabSize="normal"
-            app:theme="@style/RedAccent"/>
+            app:fabSize="normal"/>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -1,10 +1,11 @@
 package org.jorge.lazyrecyclerview.demo.ui.widget;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.jorge.lazyrecyclerview.demo.R;
-import org.jorge.lazyrecyclerview.demo.ui.extension.PushBehavior;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -96,17 +96,17 @@ public final class StatsView extends LinearLayout {
     }
 
     private void updateOnCreateViewholderCallView() {
-        getOnCreateViewholderCallsView().setText(mResources.getQuantityString(R.plurals.stat_desc_ocv, mOCVCallAmount));
+        getOnCreateViewholderCallsView().setText(mResources.getQuantityString(R.plurals.stat_desc_ocv, mOCVCallAmount, mOCVCallAmount));
         redraw();
     }
 
     private void updateOnBindViewholderCallView() {
-        getOnBindViewholderCallsView().setText(mResources.getQuantityString(R.plurals.stat_desc_obv, mOBVCallAmount));
+        getOnBindViewholderCallsView().setText(mResources.getQuantityString(R.plurals.stat_desc_obv, mOBVCallAmount, mOBVCallAmount));
         redraw();
     }
 
     private void updateGetItemCountCalls() {
-        getGetItemCountCallsView().setText(mResources.getQuantityString(R.plurals.state_desc_gic, mGICCallAmount));
+        getGetItemCountCallsView().setText(mResources.getQuantityString(R.plurals.state_desc_gic, mGICCallAmount, mGICCallAmount));
         redraw();
     }
 

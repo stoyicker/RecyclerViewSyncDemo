@@ -24,10 +24,6 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="CyanBackground">
-        <item name="background">@color/material_cyan_500</item>
-    </style>
-
     <style name="RedAccent">
         <item name="colorAccent">@color/material_red_500</item>
     </style>
