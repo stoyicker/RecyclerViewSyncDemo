@@ -115,7 +115,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="8dp"
             android:scaleType="center"
-            android:src="@drawable/ic_more"
+            android:src="@drawable/ic_dots_horizontal"
             android:theme="@style/AmberAccent"
             app:borderWidth="0dp"
             app:fabSize="normal"/>
