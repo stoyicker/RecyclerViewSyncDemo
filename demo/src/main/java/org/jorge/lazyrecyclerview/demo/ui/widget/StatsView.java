@@ -1,10 +1,8 @@
 package org.jorge.lazyrecyclerview.demo.ui.widget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -47,16 +45,16 @@ public final class StatsView extends LinearLayout {
                 R.styleable.StatsView,
                 0, 0);
 
-        String fieldType;
+        String title;
 
         try {
-            fieldType = a.getString(R.styleable.StatsView_sv_title);
+            title = a.getString(R.styleable.StatsView_sv_title);
         } finally {
             a.recycle();
         }
 
-        if (!TextUtils.isEmpty(fieldType)) {
-            getTitleView().setText(fieldType);
+        if (!TextUtils.isEmpty(title)) {
+            getTitleView().setText(title);
         }
 
         updateOnCreateViewholderCallView();
@@ -97,29 +95,22 @@ public final class StatsView extends LinearLayout {
 
     private void updateOnCreateViewholderCallView() {
         getOnCreateViewholderCallsView().setText(mResources.getQuantityString(R.plurals.stat_desc_ocv, mOCVCallAmount, mOCVCallAmount));
-        redraw();
     }
 
     private void updateOnBindViewholderCallView() {
         getOnBindViewholderCallsView().setText(mResources.getQuantityString(R.plurals.stat_desc_obv, mOBVCallAmount, mOBVCallAmount));
-        redraw();
     }
 
     private void updateGetItemCountCalls() {
         getGetItemCountCallsView().setText(mResources.getQuantityString(R.plurals.state_desc_gic, mGICCallAmount, mGICCallAmount));
-        redraw();
-    }
-
-    private void redraw() {
-        //TODO What of this is really necessary?
-        invalidate();
-        requestLayout();
     }
 
     public void resetStats() {
         mOCVCallAmount = 0;
         mOBVCallAmount = 0;
         mGICCallAmount = 0;
-        redraw();
+        updateOnCreateViewholderCallView();
+        updateOnBindViewholderCallView();
+        updateGetItemCountCalls();
     }
 }

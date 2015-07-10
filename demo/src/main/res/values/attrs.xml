@@ -3,4 +3,7 @@
     <declare-styleable name="StatsView">
         <attr name="sv_title" format="string"/>
     </declare-styleable>
+    <declare-styleable name="FloatingActionMenu">
+        <attr name="fam_expanded" format="boolean"/>
+    </declare-styleable>
 </resources>

@@ -14,7 +14,7 @@
         android:layout_margin="@dimen/standard_margin"
         android:scaleType="center"
         android:src="@drawable/ic_cart"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabSize="normal"/>
 
@@ -26,7 +26,7 @@
         android:scaleType="center"
         android:src="@drawable/ic_delete"
         android:theme="@style/RedAccent"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabSize="normal"/>
 

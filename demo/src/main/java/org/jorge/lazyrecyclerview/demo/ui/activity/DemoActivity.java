@@ -94,7 +94,7 @@ public final class DemoActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.fab_add)
-    public void addNewItem() {
+    void addNewItem() {
         mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
         mTraditionalAdapter.notifyItemInserted(mTraditionalAdapter.getItemCount() - 1);
         mLazyAdapter.notifyItemInserted(mLazyAdapter.getItemAmount() - 1);
