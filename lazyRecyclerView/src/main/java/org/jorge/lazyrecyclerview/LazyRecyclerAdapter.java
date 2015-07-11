@@ -1,9 +1,6 @@
 package org.jorge.lazyrecyclerview;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-
-import java.util.List;
 
 /**
  * Implements a {@link android.support.v7.widget.RecyclerView.Adapter} where items that have not
@@ -11,32 +8,8 @@ import java.util.List;
  *
  * @author Jorge Antonio Diaz-Benito Soriano (github.com/Stoyicker).
  */
-//TODO WIP
 public abstract class LazyRecyclerAdapter<ViewHolder extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<ViewHolder> {
 
-    private final List mItems;
+//TODO Limit OCV calls
 
-    protected LazyRecyclerAdapter(@NonNull final List items) {
-        this.mItems = items;
-    }
-
-    /**
-     * Intended to allow the replacement of the information provided by {@link RecyclerView
-     * .Adapter#getItemCount}
-     *
-     * @return {@link Integer} The total number of items that this adapter holds at the moment of
-     * this call.
-     */
-    public abstract int getItemAmount();
-
-    /**
-     * Returns the total number if items in the data set hold by the adapter that should be
-     * loaded into view at the moment of the call.
-     *
-     * @return The total number of items from this adapter that should be loaded into view.
-     */
-    @Override
-    public final int getItemCount() {
-        return Math.min(mItems.size(), Integer.MAX_VALUE);
-    }
 }

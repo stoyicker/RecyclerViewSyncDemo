@@ -29,7 +29,6 @@ public class DemoLazyRecyclerAdapter extends LazyRecyclerAdapter<DemoLazyRecycle
     private static final Integer ADAPTER_ITEM_LAYOUT_RES = R.layout.adapter_item_demo;
 
     public DemoLazyRecyclerAdapter(@NonNull final List<DemoDataModel> items, @NonNull IAdapterMethodCallListener methodCallListener) {
-        super(items);
         this.mItems = items;
         mMethodCallListener = methodCallListener;
     }
@@ -50,13 +49,13 @@ public class DemoLazyRecyclerAdapter extends LazyRecyclerAdapter<DemoLazyRecycle
         holder.mTextView.setText(item.getText());
     }
 
-    private DemoDataModel getItem(@NonNull final Integer position) {
-        return mItems.get(position);
+    @Override
+    public int getItemCount() {
+        return mItems.size();
     }
 
-    @Override
-    public int getItemAmount() {
-        return mItems.size();
+    private DemoDataModel getItem(@NonNull final Integer position) {
+        return mItems.get(position);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

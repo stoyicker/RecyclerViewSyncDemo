@@ -49,6 +49,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
     RecyclerView mTraditionalRecyclerView;
     @Bind(R.id.lazy_recycler_view)
     RecyclerView mLazyRecyclerView;
+
     RecyclerView.Adapter mTraditionalAdapter;
     DemoLazyRecyclerAdapter mLazyAdapter;
 
@@ -213,7 +214,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             public void run() {
                 mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
                 mTraditionalAdapter.notifyItemInserted(mTraditionalAdapter.getItemCount() - 1);
-                mLazyAdapter.notifyItemInserted(mLazyAdapter.getItemAmount() - 1);
+                mLazyAdapter.notifyItemInserted(mLazyAdapter.getItemCount() - 1);
                 if (mRecyclerItems.size() == 1) {
                     updateItemsVisibility(Boolean.TRUE);
                 }
@@ -233,8 +234,12 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
                 if (!mRecyclerItems.isEmpty()) {
                     mRecyclerItems.remove(mRecyclerItems.size() - 1);
                     mTraditionalAdapter.notifyItemRemoved(mTraditionalAdapter.getItemCount());
-                    mLazyAdapter.notifyItemRemoved(mLazyAdapter.getItemAmount());
-                    updateItemsVisibility(!mRecyclerItems.isEmpty());
+                    mLazyAdapter.notifyItemRemoved(mLazyAdapter.getItemCount());
+                    if (mRecyclerItems.isEmpty()) {
+                        updateItemsVisibility(Boolean.FALSE);
+                        mTraditionalStatsView.resetStats();
+                        mLazyStatsView.resetStats();
+                    }
                     updateLengthView();
                     Snackbar.make(mRootView, R.string.snack_bar_text_item_removed, Snackbar.LENGTH_SHORT)
                             .show();
