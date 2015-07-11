@@ -19,7 +19,8 @@ import butterknife.ButterKnife;
 /**
  * @author Jorge Antonio Diaz-Benito Soriano (github.com/Stoyicker).
  */
-public class DemoLazyRecyclerAdapter extends RecyclerView.Adapter<DemoLazyRecyclerAdapter.ViewHolder> {
+public final class DemoRecyclerAdapter extends RecyclerView.Adapter<DemoRecyclerAdapter
+        .ViewHolder> {
 
     private final List<DemoDataModel> mItems;
     private final IAdapterMethodCallListener mMethodCallListener;
@@ -27,13 +28,15 @@ public class DemoLazyRecyclerAdapter extends RecyclerView.Adapter<DemoLazyRecycl
     @LayoutRes
     private static final Integer ADAPTER_ITEM_LAYOUT_RES = R.layout.adapter_item_demo;
 
-    public DemoLazyRecyclerAdapter(@NonNull final List<DemoDataModel> items, @NonNull IAdapterMethodCallListener methodCallListener) {
+    public DemoRecyclerAdapter(@NonNull final List<DemoDataModel> items, @NonNull IAdapterMethodCallListener methodCallListener) {
         this.mItems = items;
         mMethodCallListener = methodCallListener;
     }
 
     @Override
-    public DemoLazyRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DemoRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent,
+                                                             final int
+                                                                     viewType) {
         mMethodCallListener.onOCVCall(this);
         final View v = LayoutInflater.from(parent.getContext()).inflate(ADAPTER_ITEM_LAYOUT_RES,
                 parent,
@@ -42,7 +45,8 @@ public class DemoLazyRecyclerAdapter extends RecyclerView.Adapter<DemoLazyRecycl
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final DemoRecyclerAdapter.ViewHolder holder, final int
+            position) {
         mMethodCallListener.onOBVCall(this);
         final DemoDataModel item = getItem(position);
         holder.mTextView.setText(item.getText());
@@ -66,5 +70,12 @@ public class DemoLazyRecyclerAdapter extends RecyclerView.Adapter<DemoLazyRecycl
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface IAdapterMethodCallListener {
+
+        void onOCVCall(@NonNull final RecyclerView.Adapter src);
+
+        void onOBVCall(@NonNull final RecyclerView.Adapter src);
     }
 }

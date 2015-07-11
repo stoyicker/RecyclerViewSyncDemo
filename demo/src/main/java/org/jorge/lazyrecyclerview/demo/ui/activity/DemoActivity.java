@@ -22,9 +22,8 @@ import android.widget.TextView;
 import org.jorge.lazyrecyclerview.demo.R;
 import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModel;
 import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModelFactory;
-import org.jorge.lazyrecyclerview.demo.ui.adapter.DemoLazyRecyclerAdapter;
-import org.jorge.lazyrecyclerview.demo.ui.adapter.IAdapterMethodCallListener;
-import org.jorge.lazyrecyclerview.demo.ui.adapter.TraditionalRecyclerAdapter;
+import org.jorge.lazyrecyclerview.demo.ui.adapter.DemoRecyclerAdapter;
+import org.jorge.lazyrecyclerview.demo.ui.adapter.DemoRecyclerAdapter.IAdapterMethodCallListener;
 import org.jorge.lazyrecyclerview.demo.ui.listener.SelfRemovingOnScrollListener;
 import org.jorge.lazyrecyclerview.demo.ui.widget.FloatingActionMenu;
 import org.jorge.lazyrecyclerview.demo.ui.widget.StatsView;
@@ -50,8 +49,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
     @Bind(R.id.lazy_recycler_view)
     RecyclerView mLazyRecyclerView;
 
-    RecyclerView.Adapter mTraditionalAdapter;
-    DemoLazyRecyclerAdapter mLazyAdapter;
+    RecyclerView.Adapter mLeftAdapter, mRightAdapter;
 
     @Bind(android.R.id.empty)
     View mEmptyView;
@@ -121,7 +119,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
     private void initRecyclerViews() {
         final Context context = getApplicationContext();
 
-        mTraditionalRecyclerView.setAdapter(mTraditionalAdapter = new TraditionalRecyclerAdapter(mRecyclerItems, this));
+        mTraditionalRecyclerView.setAdapter(mLeftAdapter = new DemoRecyclerAdapter(mRecyclerItems, this));
         mTraditionalRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mTraditionalRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mTraditionalRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
@@ -148,7 +146,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             }
         });
 
-        mLazyRecyclerView.setAdapter(mLazyAdapter = new DemoLazyRecyclerAdapter(mRecyclerItems, this));
+        mLazyRecyclerView.setAdapter(mRightAdapter = new DemoRecyclerAdapter(mRecyclerItems, this));
         mLazyRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mLazyRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mLazyRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
@@ -202,8 +200,8 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
         super.onConfigurationChanged(newConfig);
 
         if (mResources.getConfiguration().orientation != newConfig.orientation) {
-            mTraditionalAdapter.notifyDataSetChanged();
-            mLazyAdapter.notifyDataSetChanged();
+            mLeftAdapter.notifyDataSetChanged();
+            mRightAdapter.notifyDataSetChanged();
         }
     }
 
@@ -213,8 +211,8 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             @Override
             public void run() {
                 mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
-                mTraditionalAdapter.notifyItemInserted(mTraditionalAdapter.getItemCount() - 1);
-                mLazyAdapter.notifyItemInserted(mLazyAdapter.getItemCount() - 1);
+                mLeftAdapter.notifyItemInserted(mLeftAdapter.getItemCount() - 1);
+                mRightAdapter.notifyItemInserted(mRightAdapter.getItemCount() - 1);
                 if (mRecyclerItems.size() == 1) {
                     updateItemsVisibility(Boolean.TRUE);
                 }
@@ -233,8 +231,8 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             public void run() {
                 if (!mRecyclerItems.isEmpty()) {
                     mRecyclerItems.remove(mRecyclerItems.size() - 1);
-                    mTraditionalAdapter.notifyItemRemoved(mTraditionalAdapter.getItemCount());
-                    mLazyAdapter.notifyItemRemoved(mLazyAdapter.getItemCount());
+                    mLeftAdapter.notifyItemRemoved(mLeftAdapter.getItemCount());
+                    mRightAdapter.notifyItemRemoved(mRightAdapter.getItemCount());
                     if (mRecyclerItems.isEmpty()) {
                         updateItemsVisibility(Boolean.FALSE);
                         mTraditionalStatsView.resetStats();
@@ -253,8 +251,8 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             @Override
             public void run() {
                 mRecyclerItems.clear();
-                mTraditionalAdapter.notifyDataSetChanged();
-                mLazyAdapter.notifyDataSetChanged();
+                mLeftAdapter.notifyDataSetChanged();
+                mRightAdapter.notifyDataSetChanged();
                 updateLengthView();
                 updateItemsVisibility(Boolean.FALSE);
                 Snackbar.make(mRootView, R.string.snack_bar_text_items_cleared, Snackbar.LENGTH_SHORT)
@@ -271,8 +269,8 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
                         initialIndex + mBulkAddAmount;
                 for (Integer i = 0; i < mBulkAddAmount; i++)
                     mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
-                mTraditionalAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
-                mLazyAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
+                mLeftAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
+                mRightAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
                 if (mRecyclerItems.size() == mBulkAddAmount) {
                     updateItemsVisibility(Boolean.TRUE);
                 }
@@ -328,11 +326,11 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
 
     @Override
     public void onOCVCall(@NonNull final RecyclerView.Adapter src) {
-        if (src == mTraditionalAdapter) {
+        if (src == mLeftAdapter) {
             mTraditionalStatsView.increaseOnCreateViewholderCalls(1);
         }
         else {
-            if (src == mLazyAdapter) {
+            if (src == mRightAdapter) {
                 mLazyStatsView.increaseOnCreateViewholderCalls(1);
             }
         }
@@ -340,11 +338,11 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
 
     @Override
     public void onOBVCall(@NonNull final RecyclerView.Adapter src) {
-        if (src == mTraditionalAdapter) {
+        if (src == mLeftAdapter) {
             mTraditionalStatsView.increaseOnBindViewholderCalls(1);
         }
         else {
-            if (src == mLazyAdapter) {
+            if (src == mRightAdapter) {
                 mLazyStatsView.increaseOnBindViewholderCalls(1);
             }
         }
