@@ -19,6 +19,13 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:titleTextAppearance="@style/ToolbarTitle"/>
 
+        <TextView
+            android:id="@+id/length_view"
+            style="@style/StatsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="true"/>
+
         <LinearLayout
             android:id="@+id/recycler_view_container"
             android:layout_width="match_parent"
@@ -35,6 +42,7 @@
                 android:orientation="vertical">
 
                 <org.jorge.lazyrecyclerview.demo.ui.widget.StatsView
+                    android:id="@+id/traditional_stats_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:sv_title="@string/stat_title_standard"/>
@@ -54,6 +62,7 @@
                 android:orientation="vertical">
 
                 <org.jorge.lazyrecyclerview.demo.ui.widget.StatsView
+                    android:id="@+id/lazy_stats_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:sv_title="@string/stat_title_lazy"/>

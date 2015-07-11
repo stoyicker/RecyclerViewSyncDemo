@@ -22,4 +22,5 @@
         <item quantity="one">One item added.</item>
         <item quantity="other">%d items added.</item>
     </plurals>
+    <string name="item_length">Items: %d</string>
 </resources>

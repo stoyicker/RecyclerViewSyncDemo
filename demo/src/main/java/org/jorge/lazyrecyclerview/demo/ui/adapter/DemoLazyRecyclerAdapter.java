@@ -23,17 +23,20 @@ import butterknife.ButterKnife;
 public class DemoLazyRecyclerAdapter extends LazyRecyclerAdapter<DemoLazyRecyclerAdapter.ViewHolder> {
 
     private final List<DemoDataModel> mItems;
+    private final IAdapterMethodCallListener mMethodCallListener;
 
     @LayoutRes
     private static final Integer ADAPTER_ITEM_LAYOUT_RES = R.layout.adapter_item_demo;
 
-    public DemoLazyRecyclerAdapter(@NonNull final List<DemoDataModel> items) {
+    public DemoLazyRecyclerAdapter(@NonNull final List<DemoDataModel> items, @NonNull IAdapterMethodCallListener methodCallListener) {
         super(items);
         this.mItems = items;
+        mMethodCallListener = methodCallListener;
     }
 
     @Override
     public DemoLazyRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mMethodCallListener.onOCVCall(this);
         final View v = LayoutInflater.from(parent.getContext()).inflate(ADAPTER_ITEM_LAYOUT_RES,
                 parent,
                 Boolean.FALSE);
@@ -42,8 +45,15 @@ public class DemoLazyRecyclerAdapter extends LazyRecyclerAdapter<DemoLazyRecycle
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        mMethodCallListener.onOBVCall(this);
         final DemoDataModel item = getItem(position);
         holder.mTextView.setText(item.getText());
+    }
+
+    @Override
+    public int getItemCount() {
+        mMethodCallListener.onGICCall(this);
+        return super.getItemCount();
     }
 
     private DemoDataModel getItem(@NonNull final Integer position) {

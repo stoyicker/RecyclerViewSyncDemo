@@ -23,18 +23,21 @@ public final class TraditionalRecyclerAdapter extends RecyclerView.Adapter<Tradi
         .ViewHolder> {
 
     private final List<DemoDataModel> mItems;
+    private final IAdapterMethodCallListener mMethodCallListener;
 
     @LayoutRes
     private static final Integer ADAPTER_ITEM_LAYOUT_RES = R.layout.adapter_item_demo;
 
-    public TraditionalRecyclerAdapter(@NonNull final List<DemoDataModel> items) {
+    public TraditionalRecyclerAdapter(@NonNull final List<DemoDataModel> items, @NonNull IAdapterMethodCallListener methodCallListener) {
         this.mItems = items;
+        mMethodCallListener = methodCallListener;
     }
 
     @Override
     public TraditionalRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent,
                                                                     final int
                                                                             viewType) {
+        mMethodCallListener.onOCVCall(this);
         final View v = LayoutInflater.from(parent.getContext()).inflate(ADAPTER_ITEM_LAYOUT_RES,
                 parent,
                 Boolean.FALSE);
@@ -44,12 +47,14 @@ public final class TraditionalRecyclerAdapter extends RecyclerView.Adapter<Tradi
     @Override
     public void onBindViewHolder(@NonNull final TraditionalRecyclerAdapter.ViewHolder holder, final int
             position) {
+        mMethodCallListener.onOBVCall(this);
         final DemoDataModel item = getItem(position);
         holder.mTextView.setText(item.getText());
     }
 
     @Override
     public int getItemCount() {
+        mMethodCallListener.onGICCall(this);
         return mItems.size();
     }
 

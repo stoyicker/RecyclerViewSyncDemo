@@ -14,14 +14,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import org.jorge.lazyrecyclerview.LazyRecyclerAdapter;
 import org.jorge.lazyrecyclerview.demo.R;
 import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModel;
 import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModelFactory;
 import org.jorge.lazyrecyclerview.demo.ui.adapter.DemoLazyRecyclerAdapter;
+import org.jorge.lazyrecyclerview.demo.ui.adapter.IAdapterMethodCallListener;
 import org.jorge.lazyrecyclerview.demo.ui.adapter.TraditionalRecyclerAdapter;
 import org.jorge.lazyrecyclerview.demo.ui.widget.FloatingActionMenu;
+import org.jorge.lazyrecyclerview.demo.ui.widget.StatsView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,7 @@ import butterknife.OnClick;
 /**
  * @author Jorge Antonio Diaz-Benito Soriano (github.com/Stoyicker).
  */
-public final class DemoActivity extends AppCompatActivity {
+public final class DemoActivity extends AppCompatActivity implements IAdapterMethodCallListener {
 
     private static final String KEY_ITEMS = "KEY_ITEMS";
     private List<DemoDataModel> mRecyclerItems = new ArrayList<>();
@@ -60,6 +63,15 @@ public final class DemoActivity extends AppCompatActivity {
 
     @Bind(R.id.action_menu)
     FloatingActionMenu mActionMenu;
+
+    @Bind(R.id.traditional_stats_view)
+    StatsView mTraditionalStatsView;
+
+    @Bind(R.id.lazy_stats_view)
+    StatsView mLazyStatsView;
+
+    @Bind(R.id.length_view)
+    TextView mLengthTextView;
 
     @BindInt(R.integer.bulk_add_amount)
     int mBulkAddAmount;
@@ -87,6 +99,18 @@ public final class DemoActivity extends AppCompatActivity {
         }
     }
 
+    private void initRecyclerViews() {
+        final Context context = getApplicationContext();
+
+        mTraditionalRecyclerView.setAdapter(mTraditionalAdapter = new TraditionalRecyclerAdapter(mRecyclerItems, this));
+        mTraditionalRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mTraditionalRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mLazyRecyclerView.setAdapter(mLazyAdapter = new DemoLazyRecyclerAdapter(mRecyclerItems, this));
+        mLazyRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mLazyRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
     private void initActionMenu() {
         mActionMenu.setOnItemClickListener(0, new View.OnClickListener() {
             @Override
@@ -102,24 +126,18 @@ public final class DemoActivity extends AppCompatActivity {
         });
     }
 
-    private void initRecyclerViews() {
-        final Context context = getApplicationContext();
-
-        mTraditionalRecyclerView.setAdapter(mTraditionalAdapter = new TraditionalRecyclerAdapter(mRecyclerItems));
-        mTraditionalRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mTraditionalRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        mLazyRecyclerView.setAdapter(mLazyAdapter = new DemoLazyRecyclerAdapter(mRecyclerItems));
-        mLazyRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mLazyRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    private void updateLengthView() {
+        mLengthTextView.setText(getString(R.string.item_length, mRecyclerItems.size()));
     }
 
     @Override
     public void onConfigurationChanged(final Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        mTraditionalAdapter.notifyDataSetChanged();
-        mLazyAdapter.notifyDataSetChanged();
+        if (mResources.getConfiguration().orientation != newConfig.orientation) {
+            mTraditionalAdapter.notifyDataSetChanged();
+            mLazyAdapter.notifyDataSetChanged();
+        }
     }
 
     @OnClick(R.id.fab_add)
@@ -130,6 +148,7 @@ public final class DemoActivity extends AppCompatActivity {
         if (mRecyclerItems.size() == 1) {
             updateItemsVisibility(Boolean.TRUE);
         }
+        updateLengthView();
         Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, 1), Snackbar
                 .LENGTH_SHORT)
                 .show();
@@ -142,6 +161,7 @@ public final class DemoActivity extends AppCompatActivity {
             mTraditionalAdapter.notifyItemRemoved(mTraditionalAdapter.getItemCount());
             mLazyAdapter.notifyItemRemoved(mLazyAdapter.getItemAmount());
             updateItemsVisibility(!mRecyclerItems.isEmpty());
+            updateLengthView();
             Snackbar.make(mRootView, R.string.snack_bar_text_item_removed, Snackbar.LENGTH_SHORT)
                     .show();
         }
@@ -151,6 +171,7 @@ public final class DemoActivity extends AppCompatActivity {
         mRecyclerItems.clear();
         mTraditionalAdapter.notifyDataSetChanged();
         mLazyAdapter.notifyDataSetChanged();
+        updateLengthView();
         Snackbar.make(mRootView, R.string.snack_bar_text_items_cleared, Snackbar.LENGTH_SHORT)
                 .show();
     }
@@ -165,6 +186,7 @@ public final class DemoActivity extends AppCompatActivity {
         if (mRecyclerItems.size() == mBulkAddAmount) {
             updateItemsVisibility(Boolean.TRUE);
         }
+        updateLengthView();
         Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, mBulkAddAmount, mBulkAddAmount), Snackbar.LENGTH_SHORT)
                 .show();
     }
@@ -177,6 +199,9 @@ public final class DemoActivity extends AppCompatActivity {
             if (mRecyclerViewContainer.getVisibility() != View.VISIBLE) {
                 mRecyclerViewContainer.setVisibility(View.VISIBLE);
             }
+            if (mLengthTextView.getVisibility() != View.VISIBLE) {
+                mLengthTextView.setVisibility(View.VISIBLE);
+            }
         }
         else {
             if (mEmptyView.getVisibility() != View.VISIBLE) {
@@ -184,6 +209,9 @@ public final class DemoActivity extends AppCompatActivity {
             }
             if (mRecyclerViewContainer.getVisibility() != View.GONE) {
                 mRecyclerViewContainer.setVisibility(View.GONE);
+            }
+            if (mLengthTextView.getVisibility() != View.GONE) {
+                mLengthTextView.setVisibility(View.GONE);
             }
         }
     }
@@ -204,5 +232,41 @@ public final class DemoActivity extends AppCompatActivity {
         }
 
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onOCVCall(@NonNull final RecyclerView.Adapter src) {
+        if (src == mTraditionalAdapter) {
+            mTraditionalStatsView.increaseOnCreateViewholderCalls(1);
+        }
+        else {
+            if (src == mLazyAdapter) {
+                mLazyStatsView.increaseOnCreateViewholderCalls(1);
+            }
+        }
+    }
+
+    @Override
+    public void onOBVCall(@NonNull final RecyclerView.Adapter src) {
+        if (src == mTraditionalAdapter) {
+            mTraditionalStatsView.increaseOnBindViewholderCalls(1);
+        }
+        else {
+            if (src == mLazyAdapter) {
+                mLazyStatsView.increaseOnBindViewholderCalls(1);
+            }
+        }
+    }
+
+    @Override
+    public void onGICCall(@NonNull final RecyclerView.Adapter src) {
+        if (src == mTraditionalAdapter) {
+            mTraditionalStatsView.increaseGetItemCountCalls(1);
+        }
+        else {
+            if (src == mLazyAdapter) {
+                mLazyStatsView.increaseGetItemCountCalls(1);
+            }
+        }
     }
 }
