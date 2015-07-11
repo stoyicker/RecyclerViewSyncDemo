@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     app:sv_title="@string/stat_title_lazy"/>
 
-                <android.support.v7.widget.RecyclerView
+                <org.jorge.lazyrecyclerview.widget.LazyRecyclerView
                     android:id="@+id/lazy_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

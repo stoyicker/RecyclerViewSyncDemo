@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.jorge.lazyrecyclerview.LazyRecyclerAdapter;
 import org.jorge.lazyrecyclerview.demo.R;
 import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModel;
 
@@ -20,7 +19,7 @@ import butterknife.ButterKnife;
 /**
  * @author Jorge Antonio Diaz-Benito Soriano (github.com/Stoyicker).
  */
-public class DemoLazyRecyclerAdapter extends LazyRecyclerAdapter<DemoLazyRecyclerAdapter.ViewHolder> {
+public class DemoLazyRecyclerAdapter extends RecyclerView.Adapter<DemoLazyRecyclerAdapter.ViewHolder> {
 
     private final List<DemoDataModel> mItems;
     private final IAdapterMethodCallListener mMethodCallListener;
