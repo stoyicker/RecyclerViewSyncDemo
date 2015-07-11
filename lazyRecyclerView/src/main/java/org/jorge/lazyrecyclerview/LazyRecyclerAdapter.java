@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Jorge Antonio Diaz-Benito Soriano (github.com/Stoyicker).
  */
+//TODO WIP
 public abstract class LazyRecyclerAdapter<ViewHolder extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<ViewHolder> {
 
     private final List mItems;
@@ -36,6 +37,6 @@ public abstract class LazyRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
      */
     @Override
     public final int getItemCount() {
-        return Math.min(mItems.size(), Integer.MAX_VALUE); //TODO Calculate amount of items shown in screen and adapt to it
+        return Math.min(mItems.size(), Integer.MAX_VALUE);
     }
 }

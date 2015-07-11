@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 /**
  * @author Jorge Antonio Diaz-Benito Soriano (github.com/Stoyicker).
  */
+//TODO WIP
 public class LazyRecyclerView extends RecyclerView {
 
     private Integer mLastY;
