@@ -13,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModelFactory;
 import org.jorge.lazyrecyclerview.demo.ui.adapter.DemoLazyRecyclerAdapter;
 import org.jorge.lazyrecyclerview.demo.ui.adapter.IAdapterMethodCallListener;
 import org.jorge.lazyrecyclerview.demo.ui.adapter.TraditionalRecyclerAdapter;
+import org.jorge.lazyrecyclerview.demo.ui.listener.SelfRemovingOnScrollListener;
 import org.jorge.lazyrecyclerview.demo.ui.widget.FloatingActionMenu;
 import org.jorge.lazyrecyclerview.demo.ui.widget.StatsView;
 
@@ -78,6 +80,21 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
 
     Resources mResources;
 
+    private final RecyclerView.OnScrollListener mTraditionalOSL = new SelfRemovingOnScrollListener() {
+        @Override
+        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            mLazyRecyclerView.scrollBy(dx, dy);
+        }
+    }, mLazyOSL = new SelfRemovingOnScrollListener() {
+
+        @Override
+        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            mTraditionalRecyclerView.scrollBy(dx, dy);
+        }
+    };
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,10 +122,56 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
         mTraditionalRecyclerView.setAdapter(mTraditionalAdapter = new TraditionalRecyclerAdapter(mRecyclerItems, this));
         mTraditionalRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mTraditionalRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mTraditionalRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull final RecyclerView rv, @NonNull final
+            MotionEvent e) {
+                final Boolean ret = rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE;
+                if (!ret) {
+                    onTouchEvent(mTraditionalRecyclerView, e);
+                }
+                return Boolean.FALSE;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
+                if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                    mTraditionalRecyclerView.addOnScrollListener(mTraditionalOSL);
+                }
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(final boolean disallowIntercept) {
+
+            }
+        });
 
         mLazyRecyclerView.setAdapter(mLazyAdapter = new DemoLazyRecyclerAdapter(mRecyclerItems, this));
         mLazyRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mLazyRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mLazyRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull final RecyclerView rv, @NonNull final
+            MotionEvent e) {
+                final Boolean ret = rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE;
+                if (!ret) {
+                    onTouchEvent(mLazyRecyclerView, e);
+                }
+                return Boolean.FALSE;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
+                if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                    mLazyRecyclerView.addOnScrollListener(mLazyOSL);
+                }
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(final boolean disallowIntercept) {
+
+            }
+        });
     }
 
     private void initActionMenu() {
@@ -172,6 +235,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
         mTraditionalAdapter.notifyDataSetChanged();
         mLazyAdapter.notifyDataSetChanged();
         updateLengthView();
+        updateItemsVisibility(Boolean.FALSE);
         Snackbar.make(mRootView, R.string.snack_bar_text_items_cleared, Snackbar.LENGTH_SHORT)
                 .show();
     }
