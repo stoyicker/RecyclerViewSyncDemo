@@ -1,4 +1,4 @@
-package org.jorge.lazyrecyclerview.demo.ui.extension;
+package org.jorge.recyclerviewsync.demo.ui.extension;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package org.jorge.lazyrecyclerview.demo.ui.listener;
+package org.jorge.recyclerviewsync.demo.ui.listener;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

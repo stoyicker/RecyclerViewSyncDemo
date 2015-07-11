@@ -1,4 +1,4 @@
-package org.jorge.lazyrecyclerview.demo.ui.adapter;
+package org.jorge.recyclerviewsync.demo.ui.adapter;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.jorge.lazyrecyclerview.demo.R;
-import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModel;
+import org.jorge.recyclerviewsync.demo.R;
+import org.jorge.recyclerviewsync.demo.datamodel.DemoDataModel;
 
 import java.util.List;
 
@@ -23,21 +23,18 @@ public final class DemoRecyclerAdapter extends RecyclerView.Adapter<DemoRecycler
         .ViewHolder> {
 
     private final List<DemoDataModel> mItems;
-    private final IAdapterMethodCallListener mMethodCallListener;
 
     @LayoutRes
     private static final Integer ADAPTER_ITEM_LAYOUT_RES = R.layout.adapter_item_demo;
 
-    public DemoRecyclerAdapter(@NonNull final List<DemoDataModel> items, @NonNull IAdapterMethodCallListener methodCallListener) {
+    public DemoRecyclerAdapter(@NonNull final List<DemoDataModel> items) {
         this.mItems = items;
-        mMethodCallListener = methodCallListener;
     }
 
     @Override
     public DemoRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent,
                                                              final int
                                                                      viewType) {
-        mMethodCallListener.onOCVCall(this);
         final View v = LayoutInflater.from(parent.getContext()).inflate(ADAPTER_ITEM_LAYOUT_RES,
                 parent,
                 Boolean.FALSE);
@@ -47,7 +44,6 @@ public final class DemoRecyclerAdapter extends RecyclerView.Adapter<DemoRecycler
     @Override
     public void onBindViewHolder(@NonNull final DemoRecyclerAdapter.ViewHolder holder, final int
             position) {
-        mMethodCallListener.onOBVCall(this);
         final DemoDataModel item = getItem(position);
         holder.mTextView.setText(item.getText());
     }
@@ -70,12 +66,5 @@ public final class DemoRecyclerAdapter extends RecyclerView.Adapter<DemoRecycler
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-    }
-
-    public interface IAdapterMethodCallListener {
-
-        void onOCVCall(@NonNull final RecyclerView.Adapter src);
-
-        void onOBVCall(@NonNull final RecyclerView.Adapter src);
     }
 }

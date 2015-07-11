@@ -1,4 +1,4 @@
-package org.jorge.lazyrecyclerview.demo.ui.activity;
+package org.jorge.recyclerviewsync.demo.ui.activity;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -17,16 +17,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
 
-import org.jorge.lazyrecyclerview.demo.R;
-import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModel;
-import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModelFactory;
-import org.jorge.lazyrecyclerview.demo.ui.adapter.DemoRecyclerAdapter;
-import org.jorge.lazyrecyclerview.demo.ui.adapter.DemoRecyclerAdapter.IAdapterMethodCallListener;
-import org.jorge.lazyrecyclerview.demo.ui.listener.SelfRemovingOnScrollListener;
-import org.jorge.lazyrecyclerview.demo.ui.widget.FloatingActionMenu;
-import org.jorge.lazyrecyclerview.demo.ui.widget.StatsView;
+import org.jorge.recyclerviewsync.demo.R;
+import org.jorge.recyclerviewsync.demo.datamodel.DemoDataModel;
+import org.jorge.recyclerviewsync.demo.datamodel.DemoDataModelFactory;
+import org.jorge.recyclerviewsync.demo.ui.adapter.DemoRecyclerAdapter;
+import org.jorge.recyclerviewsync.demo.ui.listener.SelfRemovingOnScrollListener;
+import org.jorge.recyclerviewsync.demo.ui.widget.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +36,15 @@ import butterknife.OnClick;
 /**
  * @author Jorge Antonio Diaz-Benito Soriano (github.com/Stoyicker).
  */
-public final class DemoActivity extends AppCompatActivity implements IAdapterMethodCallListener {
+public final class DemoActivity extends AppCompatActivity {
 
     private static final String KEY_ITEMS = "KEY_ITEMS";
     private List<DemoDataModel> mRecyclerItems = new ArrayList<>();
 
-    @Bind(R.id.traditional_recycler_view)
-    RecyclerView mTraditionalRecyclerView;
-    @Bind(R.id.lazy_recycler_view)
-    RecyclerView mLazyRecyclerView;
+    @Bind(R.id.left_recycler_view)
+    RecyclerView mLeftRecyclerView;
+    @Bind(R.id.right_recycler_view)
+    RecyclerView mRightRecyclerView;
 
     RecyclerView.Adapter mLeftAdapter, mRightAdapter;
 
@@ -66,15 +63,6 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
     @Bind(R.id.action_menu)
     FloatingActionMenu mActionMenu;
 
-    @Bind(R.id.traditional_stats_view)
-    StatsView mTraditionalStatsView;
-
-    @Bind(R.id.lazy_stats_view)
-    StatsView mLazyStatsView;
-
-    @Bind(R.id.length_view)
-    TextView mLengthTextView;
-
     @BindInt(R.integer.bulk_add_amount)
     int mBulkAddAmount;
 
@@ -84,14 +72,14 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
         @Override
         public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            mLazyRecyclerView.scrollBy(dx, dy);
+            mRightRecyclerView.scrollBy(dx, dy);
         }
     }, mLazyOSL = new SelfRemovingOnScrollListener() {
 
         @Override
         public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            mTraditionalRecyclerView.scrollBy(dx, dy);
+            mLeftRecyclerView.scrollBy(dx, dy);
         }
     };
 
@@ -119,16 +107,16 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
     private void initRecyclerViews() {
         final Context context = getApplicationContext();
 
-        mTraditionalRecyclerView.setAdapter(mLeftAdapter = new DemoRecyclerAdapter(mRecyclerItems, this));
-        mTraditionalRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mTraditionalRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mTraditionalRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+        mLeftRecyclerView.setAdapter(mLeftAdapter = new DemoRecyclerAdapter(mRecyclerItems));
+        mLeftRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mLeftRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mLeftRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(@NonNull final RecyclerView rv, @NonNull final
             MotionEvent e) {
                 final Boolean ret = rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE;
                 if (!ret) {
-                    onTouchEvent(mTraditionalRecyclerView, e);
+                    onTouchEvent(mLeftRecyclerView, e);
                 }
                 return Boolean.FALSE;
             }
@@ -136,7 +124,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             @Override
             public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
                 if (e.getAction() == MotionEvent.ACTION_DOWN) {
-                    mTraditionalRecyclerView.addOnScrollListener(mTraditionalOSL);
+                    mLeftRecyclerView.addOnScrollListener(mTraditionalOSL);
                 }
             }
 
@@ -146,16 +134,16 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             }
         });
 
-        mLazyRecyclerView.setAdapter(mRightAdapter = new DemoRecyclerAdapter(mRecyclerItems, this));
-        mLazyRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mLazyRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mLazyRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+        mRightRecyclerView.setAdapter(mRightAdapter = new DemoRecyclerAdapter(mRecyclerItems));
+        mRightRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRightRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRightRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(@NonNull final RecyclerView rv, @NonNull final
             MotionEvent e) {
                 final Boolean ret = rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE;
                 if (!ret) {
-                    onTouchEvent(mLazyRecyclerView, e);
+                    onTouchEvent(mRightRecyclerView, e);
                 }
                 return Boolean.FALSE;
             }
@@ -163,7 +151,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             @Override
             public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
                 if (e.getAction() == MotionEvent.ACTION_DOWN) {
-                    mLazyRecyclerView.addOnScrollListener(mLazyOSL);
+                    mRightRecyclerView.addOnScrollListener(mLazyOSL);
                 }
             }
 
@@ -179,8 +167,6 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             @Override
             public void onClick(@NonNull final View v) {
                 clearAllItems();
-                mTraditionalStatsView.resetStats();
-                mLazyStatsView.resetStats();
             }
         });
         mActionMenu.setOnItemClickListener(1, new View.OnClickListener() {
@@ -189,10 +175,6 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
                 bulkAddItems();
             }
         });
-    }
-
-    private void updateLengthView() {
-        mLengthTextView.setText(getString(R.string.item_length, mRecyclerItems.size()));
     }
 
     @Override
@@ -216,7 +198,6 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
                 if (mRecyclerItems.size() == 1) {
                     updateItemsVisibility(Boolean.TRUE);
                 }
-                updateLengthView();
                 Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, 1), Snackbar
                         .LENGTH_SHORT)
                         .show();
@@ -235,10 +216,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
                     mRightAdapter.notifyItemRemoved(mRightAdapter.getItemCount());
                     if (mRecyclerItems.isEmpty()) {
                         updateItemsVisibility(Boolean.FALSE);
-                        mTraditionalStatsView.resetStats();
-                        mLazyStatsView.resetStats();
                     }
-                    updateLengthView();
                     Snackbar.make(mRootView, R.string.snack_bar_text_item_removed, Snackbar.LENGTH_SHORT)
                             .show();
                 }
@@ -253,7 +231,6 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
                 mRecyclerItems.clear();
                 mLeftAdapter.notifyDataSetChanged();
                 mRightAdapter.notifyDataSetChanged();
-                updateLengthView();
                 updateItemsVisibility(Boolean.FALSE);
                 Snackbar.make(mRootView, R.string.snack_bar_text_items_cleared, Snackbar.LENGTH_SHORT)
                         .show();
@@ -274,7 +251,6 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
                 if (mRecyclerItems.size() == mBulkAddAmount) {
                     updateItemsVisibility(Boolean.TRUE);
                 }
-                updateLengthView();
                 Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, mBulkAddAmount, mBulkAddAmount), Snackbar.LENGTH_SHORT)
                         .show();
             }
@@ -289,9 +265,6 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             if (mRecyclerViewContainer.getVisibility() != View.VISIBLE) {
                 mRecyclerViewContainer.setVisibility(View.VISIBLE);
             }
-            if (mLengthTextView.getVisibility() != View.VISIBLE) {
-                mLengthTextView.setVisibility(View.VISIBLE);
-            }
         }
         else {
             if (mEmptyView.getVisibility() != View.VISIBLE) {
@@ -299,9 +272,6 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             }
             if (mRecyclerViewContainer.getVisibility() != View.GONE) {
                 mRecyclerViewContainer.setVisibility(View.GONE);
-            }
-            if (mLengthTextView.getVisibility() != View.GONE) {
-                mLengthTextView.setVisibility(View.GONE);
             }
         }
     }
@@ -322,29 +292,5 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
         }
 
         super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onOCVCall(@NonNull final RecyclerView.Adapter src) {
-        if (src == mLeftAdapter) {
-            mTraditionalStatsView.increaseOnCreateViewholderCalls(1);
-        }
-        else {
-            if (src == mRightAdapter) {
-                mLazyStatsView.increaseOnCreateViewholderCalls(1);
-            }
-        }
-    }
-
-    @Override
-    public void onOBVCall(@NonNull final RecyclerView.Adapter src) {
-        if (src == mLeftAdapter) {
-            mTraditionalStatsView.increaseOnBindViewholderCalls(1);
-        }
-        else {
-            if (src == mRightAdapter) {
-                mLazyStatsView.increaseOnBindViewholderCalls(1);
-            }
-        }
     }
 }

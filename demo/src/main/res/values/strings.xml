@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LazyRecyclerViewDemo</string>
-    <string name="no_items">No items.</string>
+    <string name="app_name">RecyclerViewSync Demo</string>
+    <string name="no_items">No items.</string>ad
     <string name="snack_bar_text_item_removed">One item removed.</string>
-    <plurals name="stat_desc_ocv">
-        <item quantity="one">onCreateViewHolder: %d call </item>
-        <item quantity="other">onCreateViewHolder: %d calls </item>
-    </plurals>
-    <plurals name="stat_desc_obv">
-        <item quantity="one">onBindViewHolder: %d call </item>
-        <item quantity="other">onBindViewHolder: %d calls </item>
-    </plurals>
-    <string name="stat_title_standard">Standard</string>
-    <string name="stat_title_lazy" translatable="false">Lazy</string>
     <string name="snack_bar_text_items_cleared">All items removed.</string>
     <plurals name="snack_bar_text_items_added">
         <item quantity="one">One item added.</item>
         <item quantity="other">%d items added.</item>
     </plurals>
-    <string name="item_length">Items: %d</string>
 </resources>

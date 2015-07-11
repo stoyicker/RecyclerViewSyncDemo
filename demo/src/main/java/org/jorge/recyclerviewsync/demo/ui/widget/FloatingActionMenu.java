@@ -1,4 +1,4 @@
-package org.jorge.lazyrecyclerview.demo.ui.widget;
+package org.jorge.recyclerviewsync.demo.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,8 +12,8 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
-import org.jorge.lazyrecyclerview.demo.R;
-import org.jorge.lazyrecyclerview.demo.ui.extension.PushBehavior;
+import org.jorge.recyclerviewsync.demo.R;
+import org.jorge.recyclerviewsync.demo.ui.extension.PushBehavior;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
