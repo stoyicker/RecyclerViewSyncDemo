@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -17,7 +19,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import org.jorge.lazyrecyclerview.LazyRecyclerAdapter;
 import org.jorge.lazyrecyclerview.demo.R;
 import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModel;
 import org.jorge.lazyrecyclerview.demo.datamodel.DemoDataModelFactory;
@@ -48,8 +49,8 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
     RecyclerView mTraditionalRecyclerView;
     @Bind(R.id.lazy_recycler_view)
     RecyclerView mLazyRecyclerView;
-    RecyclerView.Adapter mTraditionalAdapter;
-    LazyRecyclerAdapter mLazyAdapter;
+    TraditionalRecyclerAdapter mTraditionalAdapter;
+    DemoLazyRecyclerAdapter mLazyAdapter;
 
     @Bind(android.R.id.empty)
     View mEmptyView;
@@ -179,6 +180,8 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             @Override
             public void onClick(@NonNull final View v) {
                 clearAllItems();
+                mTraditionalStatsView.resetStats();
+                mLazyStatsView.resetStats();
             }
         });
         mActionMenu.setOnItemClickListener(1, new View.OnClickListener() {
@@ -205,54 +208,74 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
 
     @OnClick(R.id.fab_add)
     void addNewItem() {
-        mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
-        mTraditionalAdapter.notifyItemInserted(mTraditionalAdapter.getItemCount() - 1);
-        mLazyAdapter.notifyItemInserted(mLazyAdapter.getItemAmount() - 1);
-        if (mRecyclerItems.size() == 1) {
-            updateItemsVisibility(Boolean.TRUE);
-        }
-        updateLengthView();
-        Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, 1), Snackbar
-                .LENGTH_SHORT)
-                .show();
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
+                mTraditionalAdapter.notifyItemInserted(mTraditionalAdapter.getItemAmount() - 1);
+                mLazyAdapter.notifyItemInserted(mLazyAdapter.getItemAmount() - 1);
+                if (mRecyclerItems.size() == 1) {
+                    updateItemsVisibility(Boolean.TRUE);
+                }
+                updateLengthView();
+                Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, 1), Snackbar
+                        .LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     @OnClick(R.id.fab_remove)
     public void removeItem() {
-        if (!mRecyclerItems.isEmpty()) {
-            mRecyclerItems.remove(mRecyclerItems.size() - 1);
-            mTraditionalAdapter.notifyItemRemoved(mTraditionalAdapter.getItemCount());
-            mLazyAdapter.notifyItemRemoved(mLazyAdapter.getItemAmount());
-            updateItemsVisibility(!mRecyclerItems.isEmpty());
-            updateLengthView();
-            Snackbar.make(mRootView, R.string.snack_bar_text_item_removed, Snackbar.LENGTH_SHORT)
-                    .show();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (!mRecyclerItems.isEmpty()) {
+                    mRecyclerItems.remove(mRecyclerItems.size() - 1);
+                    mTraditionalAdapter.notifyItemRemoved(mTraditionalAdapter.getItemAmount());
+                    mLazyAdapter.notifyItemRemoved(mLazyAdapter.getItemAmount());
+                    updateItemsVisibility(!mRecyclerItems.isEmpty());
+                    updateLengthView();
+                    Snackbar.make(mRootView, R.string.snack_bar_text_item_removed, Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
     }
 
     private void clearAllItems() {
-        mRecyclerItems.clear();
-        mTraditionalAdapter.notifyDataSetChanged();
-        mLazyAdapter.notifyDataSetChanged();
-        updateLengthView();
-        updateItemsVisibility(Boolean.FALSE);
-        Snackbar.make(mRootView, R.string.snack_bar_text_items_cleared, Snackbar.LENGTH_SHORT)
-                .show();
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                mRecyclerItems.clear();
+                mTraditionalAdapter.notifyDataSetChanged();
+                mLazyAdapter.notifyDataSetChanged();
+                updateLengthView();
+                updateItemsVisibility(Boolean.FALSE);
+                Snackbar.make(mRootView, R.string.snack_bar_text_items_cleared, Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     private void bulkAddItems() {
-        final Integer initialIndex = mRecyclerItems.size() - 1, finalIndex =
-                initialIndex + mBulkAddAmount;
-        for (Integer i = 0; i < mBulkAddAmount; i++)
-            mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
-        mTraditionalAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
-        mLazyAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
-        if (mRecyclerItems.size() == mBulkAddAmount) {
-            updateItemsVisibility(Boolean.TRUE);
-        }
-        updateLengthView();
-        Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, mBulkAddAmount, mBulkAddAmount), Snackbar.LENGTH_SHORT)
-                .show();
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                final Integer initialIndex = mRecyclerItems.size() - 1, finalIndex =
+                        initialIndex + mBulkAddAmount;
+                for (Integer i = 0; i < mBulkAddAmount; i++)
+                    mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
+                mTraditionalAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
+                mLazyAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
+                if (mRecyclerItems.size() == mBulkAddAmount) {
+                    updateItemsVisibility(Boolean.TRUE);
+                }
+                updateLengthView();
+                Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, mBulkAddAmount, mBulkAddAmount), Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     private void updateItemsVisibility(@NonNull final Boolean recyclerViewHasItems) {

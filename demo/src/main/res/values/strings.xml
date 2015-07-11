@@ -4,16 +4,16 @@
     <string name="no_items">No items.</string>
     <string name="snack_bar_text_item_removed">One item removed.</string>
     <plurals name="stat_desc_ocv">
-        <item quantity="one">onCreateViewHolder: %d call</item>
-        <item quantity="other">onCreateViewHolder: %d calls</item>
+        <item quantity="one">onCreateViewHolder: %d call </item>
+        <item quantity="other">onCreateViewHolder: %d calls </item>
     </plurals>
     <plurals name="stat_desc_obv">
-        <item quantity="one">onBindViewHolder: %d call</item>
-        <item quantity="other">onBindViewHolder: %d calls</item>
+        <item quantity="one">onBindViewHolder: %d call </item>
+        <item quantity="other">onBindViewHolder: %d calls </item>
     </plurals>
     <plurals name="state_desc_gic">
-        <item quantity="one">onGetItemCount: %d call</item>
-        <item quantity="other">onGetItemCount: %d calls</item>
+        <item quantity="one">getItemCount: %d call </item>
+        <item quantity="other">getItemCount: %d calls </item>
     </plurals>
     <string name="stat_title_standard">Standard</string>
     <string name="stat_title_lazy" translatable="false">Lazy</string>

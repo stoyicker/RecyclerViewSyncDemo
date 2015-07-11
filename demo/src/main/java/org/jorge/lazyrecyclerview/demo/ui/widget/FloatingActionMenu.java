@@ -126,11 +126,13 @@ public class FloatingActionMenu extends LinearLayout {
     @OnClick(R.id.fab_index_zero)
     void onZeroClick() {
         triggerClickOnButton(0);
+        toggleExpand();
     }
 
     @OnClick(R.id.fab_index_one)
     void onOneClick() {
         triggerClickOnButton(1);
+        toggleExpand();
     }
 
     public void setOnItemClickListener(@NonNull final Integer actionIndex, final OnClickListener
