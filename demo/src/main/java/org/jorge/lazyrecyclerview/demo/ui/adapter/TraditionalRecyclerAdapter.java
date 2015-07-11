@@ -52,13 +52,8 @@ public final class TraditionalRecyclerAdapter extends RecyclerView.Adapter<Tradi
         holder.mTextView.setText(item.getText());
     }
 
-    public int getItemAmount() {
-        return mItems.size();
-    }
-
     @Override
     public int getItemCount() {
-        mMethodCallListener.onGICCall(this);
         return mItems.size();
     }
 

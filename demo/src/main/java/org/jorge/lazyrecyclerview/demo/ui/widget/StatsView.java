@@ -20,10 +20,10 @@ import butterknife.ButterKnife;
  */
 public final class StatsView extends LinearLayout {
 
-    @Bind({R.id.title, R.id.on_create_viewholder_calls, R.id.on_bind_viewholder_calls, R.id.get_item_count_calls})
+    @Bind({R.id.title, R.id.on_create_viewholder_calls, R.id.on_bind_viewholder_calls})
     TextView[] mTextViews;
 
-    private Integer mOCVCallAmount = 0, mOBVCallAmount = 0, mGICCallAmount = 0;
+    private Integer mOCVCallAmount = 0, mOBVCallAmount = 0;
 
     private Resources mResources;
 
@@ -59,7 +59,6 @@ public final class StatsView extends LinearLayout {
 
         updateOnCreateViewholderCallView();
         updateOnBindViewholderCallView();
-        updateGetItemCountCalls();
     }
 
     private TextView getTitleView() {
@@ -74,10 +73,6 @@ public final class StatsView extends LinearLayout {
         return mTextViews[2];
     }
 
-    private TextView getGetItemCountCallsView() {
-        return mTextViews[3];
-    }
-
     public void increaseOnCreateViewholderCalls(@NonNull final Integer delta) {
         mOCVCallAmount += delta;
         updateOnCreateViewholderCallView();
@@ -88,11 +83,6 @@ public final class StatsView extends LinearLayout {
         updateOnBindViewholderCallView();
     }
 
-    public void increaseGetItemCountCalls(@NonNull final Integer delta) {
-        mGICCallAmount += delta;
-        updateGetItemCountCalls();
-    }
-
     private void updateOnCreateViewholderCallView() {
         getOnCreateViewholderCallsView().setText(mResources.getQuantityString(R.plurals.stat_desc_ocv, mOCVCallAmount, mOCVCallAmount));
     }
@@ -101,16 +91,10 @@ public final class StatsView extends LinearLayout {
         getOnBindViewholderCallsView().setText(mResources.getQuantityString(R.plurals.stat_desc_obv, mOBVCallAmount, mOBVCallAmount));
     }
 
-    private void updateGetItemCountCalls() {
-        getGetItemCountCallsView().setText(mResources.getQuantityString(R.plurals.state_desc_gic, mGICCallAmount, mGICCallAmount));
-    }
-
     public void resetStats() {
         mOCVCallAmount = 0;
         mOBVCallAmount = 0;
-        mGICCallAmount = 0;
         updateOnCreateViewholderCallView();
         updateOnBindViewholderCallView();
-        updateGetItemCountCalls();
     }
 }

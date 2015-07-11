@@ -11,10 +11,6 @@
         <item quantity="one">onBindViewHolder: %d call </item>
         <item quantity="other">onBindViewHolder: %d calls </item>
     </plurals>
-    <plurals name="state_desc_gic">
-        <item quantity="one">getItemCount: %d call </item>
-        <item quantity="other">getItemCount: %d calls </item>
-    </plurals>
     <string name="stat_title_standard">Standard</string>
     <string name="stat_title_lazy" translatable="false">Lazy</string>
     <string name="snack_bar_text_items_cleared">All items removed.</string>

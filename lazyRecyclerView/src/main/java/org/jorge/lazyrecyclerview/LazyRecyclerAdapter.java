@@ -26,9 +26,7 @@ public abstract class LazyRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
      * @return {@link Integer} The total number of items that this adapter holds at the moment of
      * this call.
      */
-    public int getItemAmount() {
-        return mItems.size();
-    }
+    public abstract int getItemAmount();
 
     /**
      * Returns the total number if items in the data set hold by the adapter that should be
@@ -37,7 +35,7 @@ public abstract class LazyRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
      * @return The total number of items from this adapter that should be loaded into view.
      */
     @Override
-    public int getItemCount() {
+    public final int getItemCount() {
         return Math.min(mItems.size(), Integer.MAX_VALUE); //TODO Calculate amount of items shown in screen and adapt to it
     }
 }

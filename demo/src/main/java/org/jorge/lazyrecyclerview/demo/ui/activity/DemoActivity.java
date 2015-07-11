@@ -49,7 +49,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
     RecyclerView mTraditionalRecyclerView;
     @Bind(R.id.lazy_recycler_view)
     RecyclerView mLazyRecyclerView;
-    TraditionalRecyclerAdapter mTraditionalAdapter;
+    RecyclerView.Adapter mTraditionalAdapter;
     DemoLazyRecyclerAdapter mLazyAdapter;
 
     @Bind(android.R.id.empty)
@@ -212,7 +212,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             @Override
             public void run() {
                 mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
-                mTraditionalAdapter.notifyItemInserted(mTraditionalAdapter.getItemAmount() - 1);
+                mTraditionalAdapter.notifyItemInserted(mTraditionalAdapter.getItemCount() - 1);
                 mLazyAdapter.notifyItemInserted(mLazyAdapter.getItemAmount() - 1);
                 if (mRecyclerItems.size() == 1) {
                     updateItemsVisibility(Boolean.TRUE);
@@ -232,7 +232,7 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
             public void run() {
                 if (!mRecyclerItems.isEmpty()) {
                     mRecyclerItems.remove(mRecyclerItems.size() - 1);
-                    mTraditionalAdapter.notifyItemRemoved(mTraditionalAdapter.getItemAmount());
+                    mTraditionalAdapter.notifyItemRemoved(mTraditionalAdapter.getItemCount());
                     mLazyAdapter.notifyItemRemoved(mLazyAdapter.getItemAmount());
                     updateItemsVisibility(!mRecyclerItems.isEmpty());
                     updateLengthView();
@@ -341,18 +341,6 @@ public final class DemoActivity extends AppCompatActivity implements IAdapterMet
         else {
             if (src == mLazyAdapter) {
                 mLazyStatsView.increaseOnBindViewholderCalls(1);
-            }
-        }
-    }
-
-    @Override
-    public void onGICCall(@NonNull final RecyclerView.Adapter src) {
-        if (src == mTraditionalAdapter) {
-            mTraditionalStatsView.increaseGetItemCountCalls(1);
-        }
-        else {
-            if (src == mLazyAdapter) {
-                mLazyStatsView.increaseGetItemCountCalls(1);
             }
         }
     }

@@ -11,6 +11,4 @@ public interface IAdapterMethodCallListener {
     void onOCVCall(@NonNull final RecyclerView.Adapter src);
 
     void onOBVCall(@NonNull final RecyclerView.Adapter src);
-
-    void onGICCall(@NonNull final RecyclerView.Adapter src);
 }

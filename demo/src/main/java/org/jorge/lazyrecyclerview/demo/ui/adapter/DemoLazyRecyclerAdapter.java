@@ -50,14 +50,13 @@ public class DemoLazyRecyclerAdapter extends LazyRecyclerAdapter<DemoLazyRecycle
         holder.mTextView.setText(item.getText());
     }
 
-    @Override
-    public int getItemCount() {
-        mMethodCallListener.onGICCall(this);
-        return super.getItemCount();
-    }
-
     private DemoDataModel getItem(@NonNull final Integer position) {
         return mItems.get(position);
+    }
+
+    @Override
+    public int getItemAmount() {
+        return mItems.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
