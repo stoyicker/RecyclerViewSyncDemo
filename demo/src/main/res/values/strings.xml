@@ -4,6 +4,8 @@
     <string name="no_items">No items.</string>ad
     <string name="snack_bar_text_item_removed">One item removed.</string>
     <string name="snack_bar_text_items_cleared">All items removed.</string>
+    <string name="action_github">Open on GitHub</string>
+    <string name="repo_url">https://github.com/Stoyicker/RecyclerViewSyncDemo</string>
     <plurals name="snack_bar_text_items_added">
         <item quantity="one">One item added.</item>
         <item quantity="other">%d items added.</item>

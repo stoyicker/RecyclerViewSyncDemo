@@ -1,8 +1,10 @@
 package org.jorge.recyclerviewsync.demo.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +17,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -30,6 +35,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.BindInt;
+import butterknife.BindString;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -68,13 +74,13 @@ public final class DemoActivity extends AppCompatActivity {
 
     Resources mResources;
 
-    private final RecyclerView.OnScrollListener mTraditionalOSL = new SelfRemovingOnScrollListener() {
+    private final RecyclerView.OnScrollListener mLeftOSL = new SelfRemovingOnScrollListener() {
         @Override
         public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
             super.onScrolled(recyclerView, dx, dy);
             mRightRecyclerView.scrollBy(dx, dy);
         }
-    }, mLazyOSL = new SelfRemovingOnScrollListener() {
+    }, mRightOSL = new SelfRemovingOnScrollListener() {
 
         @Override
         public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
@@ -82,6 +88,9 @@ public final class DemoActivity extends AppCompatActivity {
             mLeftRecyclerView.scrollBy(dx, dy);
         }
     };
+
+    @BindString(R.string.repo_url)
+    String mRepoUrl;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -116,15 +125,15 @@ public final class DemoActivity extends AppCompatActivity {
             MotionEvent e) {
                 final Boolean ret = rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE;
                 if (!ret) {
-                    onTouchEvent(mLeftRecyclerView, e);
+                    onTouchEvent(rv, e);
                 }
                 return Boolean.FALSE;
             }
 
             @Override
             public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
-                if (e.getAction() == MotionEvent.ACTION_DOWN) {
-                    mLeftRecyclerView.addOnScrollListener(mTraditionalOSL);
+                if (e.getAction() == MotionEvent.ACTION_DOWN && mRightRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+                    rv.addOnScrollListener(mLeftOSL);
                 }
             }
 
@@ -143,15 +152,15 @@ public final class DemoActivity extends AppCompatActivity {
             MotionEvent e) {
                 final Boolean ret = rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE;
                 if (!ret) {
-                    onTouchEvent(mRightRecyclerView, e);
+                    onTouchEvent(rv, e);
                 }
                 return Boolean.FALSE;
             }
 
             @Override
             public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
-                if (e.getAction() == MotionEvent.ACTION_DOWN) {
-                    mRightRecyclerView.addOnScrollListener(mLazyOSL);
+                if (e.getAction() == MotionEvent.ACTION_DOWN && mLeftRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+                    rv.addOnScrollListener(mRightOSL);
                 }
             }
 
@@ -292,5 +301,29 @@ public final class DemoActivity extends AppCompatActivity {
         }
 
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar_activity_demo, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_github:
+                openRepo();
+                return Boolean.TRUE;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void openRepo() {
+        final Intent ghIntent = new Intent(Intent.ACTION_VIEW);
+        ghIntent.setData(Uri.parse(mRepoUrl));
+        startActivity(ghIntent);
     }
 }

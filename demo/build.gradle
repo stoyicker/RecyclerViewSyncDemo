@@ -15,6 +15,15 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile new File("recyclerviewsyncdemo.keystore")
+            storePassword(new File("recyclerviewsyncdemo.pwd").text)
+            keyAlias("recyclerviewsyncdemo")
+            keyPassword(new File("recyclerviewsyncdemo.storage.pwd").text)
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled true
@@ -24,6 +33,9 @@ android {
         release {
             minifyEnabled true
             proguardFiles 'proguard-rules.pro'
+            //noinspection GroovyAssignabilityCheck
+            signingConfig signingConfigs.release
+            zipAlignEnabled true
         }
     }
 
