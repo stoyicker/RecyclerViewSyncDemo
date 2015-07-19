@@ -1,5 +1,7 @@
 RecyclerViewSyncDemo
 ====================
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RecyclerViewSyncDemo-green.svg?style=flat)](https://android-arsenal.com/details/3/2162)
+
 Demo project for how to sync the scrolling of two (applicable to as many as desired) RecyclerViews.
 
 Minimum required API level: 7 (as RecyclerView).
