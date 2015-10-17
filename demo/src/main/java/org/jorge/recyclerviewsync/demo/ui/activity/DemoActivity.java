@@ -17,6 +17,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -120,9 +121,14 @@ public final class DemoActivity extends AppCompatActivity {
         mLeftRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mLeftRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mLeftRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+
+            private int mLastY;
+
             @Override
             public boolean onInterceptTouchEvent(@NonNull final RecyclerView rv, @NonNull final
             MotionEvent e) {
+                Log.d("debug", "LEFT: onInterceptTouchEvent");
+
                 final Boolean ret = rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE;
                 if (!ret) {
                     onTouchEvent(rv, e);
@@ -132,14 +138,24 @@ public final class DemoActivity extends AppCompatActivity {
 
             @Override
             public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
-                if (e.getAction() == MotionEvent.ACTION_DOWN && mRightRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+                Log.d("debug", "LEFT: onTouchEvent");
+
+                final int action;
+                if ((action = e.getAction()) == MotionEvent.ACTION_DOWN && mRightRecyclerView
+                        .getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+                    mLastY = rv.getScrollY();
                     rv.addOnScrollListener(mLeftOSL);
+                }
+                else {
+                    if (action == MotionEvent.ACTION_UP && rv.getScrollY() == mLastY) {
+                        rv.removeOnScrollListener(mLeftOSL);
+                    }
                 }
             }
 
             @Override
             public void onRequestDisallowInterceptTouchEvent(final boolean disallowIntercept) {
-
+                Log.d("debug", "LEFT: onRequestDisallowInterceptTouchEvent");
             }
         });
 
@@ -147,9 +163,14 @@ public final class DemoActivity extends AppCompatActivity {
         mRightRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRightRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRightRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+
+            private int mLastY;
+
             @Override
             public boolean onInterceptTouchEvent(@NonNull final RecyclerView rv, @NonNull final
             MotionEvent e) {
+                Log.d("debug", "RIGHT: onInterceptTouchEvent");
+
                 final Boolean ret = rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE;
                 if (!ret) {
                     onTouchEvent(rv, e);
@@ -159,14 +180,25 @@ public final class DemoActivity extends AppCompatActivity {
 
             @Override
             public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
-                if (e.getAction() == MotionEvent.ACTION_DOWN && mLeftRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+                Log.d("debug", "RIGHT: onTouchEvent");
+
+                final int action;
+                if ((action = e.getAction()) == MotionEvent.ACTION_DOWN && mLeftRecyclerView
+                        .getScrollState
+                                () == RecyclerView.SCROLL_STATE_IDLE) {
+                    mLastY = rv.getScrollY();
                     rv.addOnScrollListener(mRightOSL);
+                }
+                else {
+                    if (action == MotionEvent.ACTION_UP && rv.getScrollY() == mLastY) {
+                        rv.removeOnScrollListener(mRightOSL);
+                    }
                 }
             }
 
             @Override
             public void onRequestDisallowInterceptTouchEvent(final boolean disallowIntercept) {
-
+                Log.d("debug", "RIGHT: onRequestDisallowInterceptTouchEvent");
             }
         });
     }
