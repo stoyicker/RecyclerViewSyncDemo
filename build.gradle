@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:1.4.0-beta6'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
     }
 }
@@ -16,6 +16,9 @@ allprojects {
     }
 }
 
+def gradleVersion = '2.8-rc-2'
+
 task updateWrapper(type: Wrapper) {
-    gradleVersion = '2.5'
+    distributionUrl = "https\\://services.gradle.org/distributions/gradle-${gradleVersion}-all" +
+            ".zip"
 }

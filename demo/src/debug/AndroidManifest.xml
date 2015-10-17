@@ -2,6 +2,8 @@
           xmlns:tools="http://schemas.android.com/tools">
     <!-- Speed up app deployment in debug mode. Not used API<8, that's why "UnusedAttribute". -->
     <application
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:vmSafeMode="true"
         tools:ignore="UnusedAttribute"/>
 </manifest>
