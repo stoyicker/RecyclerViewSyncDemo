@@ -17,6 +17,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import org.jorge.recyclerviewsync.demo.R;
 import org.jorge.recyclerviewsync.demo.datamodel.DemoDataModel;
 import org.jorge.recyclerviewsync.demo.datamodel.DemoDataModelFactory;
 import org.jorge.recyclerviewsync.demo.ui.adapter.DemoRecyclerAdapter;
+import org.jorge.recyclerviewsync.demo.ui.listener.ScrollPositionTracingOnScrollListener;
 import org.jorge.recyclerviewsync.demo.ui.listener.SelfRemovingOnScrollListener;
 import org.jorge.recyclerviewsync.demo.ui.widget.FloatingActionMenu;
 
@@ -74,18 +76,21 @@ public final class DemoActivity extends AppCompatActivity {
 
     Resources mResources;
 
+    private final ScrollPositionTracingOnScrollListener mLeftTracingOSL = new ScrollPositionTracingOnScrollListener(), mRightTracingOSL = new ScrollPositionTracingOnScrollListener();
+
     private final RecyclerView.OnScrollListener mLeftOSL = new SelfRemovingOnScrollListener() {
         @Override
         public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
-            super.onScrolled(recyclerView, dx, dy);
             mRightRecyclerView.scrollBy(dx, dy);
+            super.onScrolled(recyclerView, dx, dy);
         }
     }, mRightOSL = new SelfRemovingOnScrollListener() {
 
         @Override
         public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
-            super.onScrolled(recyclerView, dx, dy);
+            Log.d("RIGHTLOG", "dx: " + dx + " dy: " + dy);
             mLeftRecyclerView.scrollBy(dx, dy);
+            super.onScrolled(recyclerView, dx, dy);
         }
     };
 
@@ -119,6 +124,7 @@ public final class DemoActivity extends AppCompatActivity {
         mLeftRecyclerView.setAdapter(mLeftAdapter = new DemoRecyclerAdapter(mRecyclerItems));
         mLeftRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mLeftRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mLeftRecyclerView.addOnScrollListener(mLeftTracingOSL);
         mLeftRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
 
             private int mLastY;
@@ -137,11 +143,11 @@ public final class DemoActivity extends AppCompatActivity {
                 final int action;
                 if ((action = e.getAction()) == MotionEvent.ACTION_DOWN && mRightRecyclerView
                         .getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
-                    mLastY = rv.getScrollY();
+                    mLastY = mLeftTracingOSL.getScrollY();
                     rv.addOnScrollListener(mLeftOSL);
                 }
                 else {
-                    if (action == MotionEvent.ACTION_UP && rv.getScrollY() == mLastY) {
+                    if (action == MotionEvent.ACTION_UP && mLeftTracingOSL.getScrollY() == mLastY) {
                         rv.removeOnScrollListener(mLeftOSL);
                     }
                 }
@@ -155,6 +161,7 @@ public final class DemoActivity extends AppCompatActivity {
         mRightRecyclerView.setAdapter(mRightAdapter = new DemoRecyclerAdapter(mRecyclerItems));
         mRightRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRightRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRightRecyclerView.addOnScrollListener(mRightTracingOSL);
         mRightRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
 
             private int mLastY;
@@ -172,13 +179,17 @@ public final class DemoActivity extends AppCompatActivity {
             public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
                 final int action;
                 if ((action = e.getAction()) == MotionEvent.ACTION_DOWN && mLeftRecyclerView
-                        .getScrollState
-                                () == RecyclerView.SCROLL_STATE_IDLE) {
-                    mLastY = rv.getScrollY();
+                        .getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+                    Log.d("RIGHTLOG", "IF STATEMENT, added onScrollListener");
+                    mLastY = mRightTracingOSL.getScrollY();
                     rv.addOnScrollListener(mRightOSL);
+                    rv.removeOnScrollListener(mRightTracingOSL);
+                    rv.addOnScrollListener(mRightTracingOSL);
                 }
                 else {
-                    if (action == MotionEvent.ACTION_UP && rv.getScrollY() == mLastY) {
+                    Log.d("RIGHTLOG", "ELSE STATEMENT, getScrollY() is " + mRightTracingOSL.getScrollY() + " and mLastY is " + mLastY);
+                    if (action == MotionEvent.ACTION_UP && mRightTracingOSL.getScrollY() == mLastY) {
+                        Log.d("RIGHTLOG", "ELSE STATEMENT -> removed onScrollListener");
                         rv.removeOnScrollListener(mRightOSL);
                     }
                 }
@@ -285,7 +296,7 @@ public final class DemoActivity extends AppCompatActivity {
         });
     }
 
-    private void updateItemsVisibility(@NonNull final boolean recyclerViewHasItems) {
+    private void updateItemsVisibility(final boolean recyclerViewHasItems) {
         if (recyclerViewHasItems) {
             if (mEmptyView.getVisibility() != View.GONE) {
                 mEmptyView.setVisibility(View.GONE);
