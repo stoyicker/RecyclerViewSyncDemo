@@ -126,8 +126,7 @@ public final class DemoActivity extends AppCompatActivity {
             @Override
             public boolean onInterceptTouchEvent(@NonNull final RecyclerView rv, @NonNull final
             MotionEvent e) {
-                final Boolean ret = rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE;
-                if (!ret) {
+                if (rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
                     onTouchEvent(rv, e);
                 }
                 return Boolean.FALSE;
@@ -163,8 +162,7 @@ public final class DemoActivity extends AppCompatActivity {
             @Override
             public boolean onInterceptTouchEvent(@NonNull final RecyclerView rv, @NonNull final
             MotionEvent e) {
-                final Boolean ret = rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE;
-                if (!ret) {
+                if (rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
                     onTouchEvent(rv, e);
                 }
                 return Boolean.FALSE;
@@ -287,7 +285,7 @@ public final class DemoActivity extends AppCompatActivity {
         });
     }
 
-    private void updateItemsVisibility(@NonNull final Boolean recyclerViewHasItems) {
+    private void updateItemsVisibility(@NonNull final boolean recyclerViewHasItems) {
         if (recyclerViewHasItems) {
             if (mEmptyView.getVisibility() != View.GONE) {
                 mEmptyView.setVisibility(View.GONE);
