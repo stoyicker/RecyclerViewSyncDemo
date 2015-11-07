@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     productFlavors {
         standard {
@@ -28,8 +28,7 @@ android {
     buildTypes {
         //noinspection GroovyAssignabilityCheck
         debug {
-            minifyEnabled true
-            proguardFiles 'proguard-rules.pro'
+            minifyEnabled false
         }
 
         release {
@@ -53,6 +52,8 @@ android {
 
         enable 'IconExpectedSize', 'LogConditional', 'NegativeMargin', 'NewerVersionAvailable',
                 'SelectableText', 'TypographyQuotes'
+
+        disable 'GoogleAppIndexingWarning'
     }
 }
 
