@@ -22,6 +22,7 @@
 
         <LinearLayout
             android:id="@+id/recycler_view_container"
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/standard_margin"
@@ -37,7 +38,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fadeScrollbars="true"
-                android:scrollbars="vertical"/>
+                android:scrollbars="vertical"
+                custom:alignOrientation="vertical"/>
 
             <aligningrecyclerview.AligningRecyclerView
                 android:id="@+id/right_recycler_view"
@@ -45,7 +47,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fadeScrollbars="true"
-                android:scrollbars="vertical"/>
+                android:scrollbars="vertical"
+                custom:alignOrientation="vertical"/>
         </LinearLayout>
 
         <TextView
