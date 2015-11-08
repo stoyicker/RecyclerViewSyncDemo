@@ -17,24 +17,22 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 
 import org.jorge.recyclerviewsync.demo.R;
 import org.jorge.recyclerviewsync.demo.datamodel.DemoDataModel;
 import org.jorge.recyclerviewsync.demo.datamodel.DemoDataModelFactory;
 import org.jorge.recyclerviewsync.demo.ui.adapter.DemoRecyclerAdapter;
-import org.jorge.recyclerviewsync.demo.ui.listener.ScrollPositionTracingOnScrollListener;
-import org.jorge.recyclerviewsync.demo.ui.listener.SelfRemovingOnScrollListener;
 import org.jorge.recyclerviewsync.demo.ui.widget.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import aligningrecyclerview.AligningRecyclerView;
+import aligningrecyclerview.AlignmentManager;
 import butterknife.Bind;
 import butterknife.BindInt;
 import butterknife.BindString;
@@ -50,9 +48,9 @@ public final class DemoActivity extends AppCompatActivity {
     private List<DemoDataModel> mRecyclerItems = new ArrayList<>();
 
     @Bind(R.id.left_recycler_view)
-    RecyclerView mLeftRecyclerView;
+    AligningRecyclerView mLeftRecyclerView;
     @Bind(R.id.right_recycler_view)
-    RecyclerView mRightRecyclerView;
+    AligningRecyclerView mRightRecyclerView;
 
     RecyclerView.Adapter mLeftAdapter, mRightAdapter;
 
@@ -75,24 +73,6 @@ public final class DemoActivity extends AppCompatActivity {
     int mBulkAddAmount;
 
     Resources mResources;
-
-    private final ScrollPositionTracingOnScrollListener mLeftTracingOSL = new ScrollPositionTracingOnScrollListener(), mRightTracingOSL = new ScrollPositionTracingOnScrollListener();
-
-    private final RecyclerView.OnScrollListener mLeftOSL = new SelfRemovingOnScrollListener() {
-        @Override
-        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
-            mRightRecyclerView.scrollBy(dx, dy);
-            super.onScrolled(recyclerView, dx, dy);
-        }
-    }, mRightOSL = new SelfRemovingOnScrollListener() {
-
-        @Override
-        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
-            Log.d("RIGHTLOG", "dx: " + dx + " dy: " + dy);
-            mLeftRecyclerView.scrollBy(dx, dy);
-            super.onScrolled(recyclerView, dx, dy);
-        }
-    };
 
     @BindString(R.string.repo_url)
     String mRepoUrl;
@@ -124,81 +104,12 @@ public final class DemoActivity extends AppCompatActivity {
         mLeftRecyclerView.setAdapter(mLeftAdapter = new DemoRecyclerAdapter(mRecyclerItems));
         mLeftRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mLeftRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mLeftRecyclerView.addOnScrollListener(mLeftTracingOSL);
-        mLeftRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-
-            private int mLastY;
-
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull final RecyclerView rv, @NonNull final
-            MotionEvent e) {
-                if (rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
-                    onTouchEvent(rv, e);
-                }
-                return Boolean.FALSE;
-            }
-
-            @Override
-            public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
-                final int action;
-                if ((action = e.getAction()) == MotionEvent.ACTION_DOWN && mRightRecyclerView
-                        .getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
-                    mLastY = mLeftTracingOSL.getScrollY();
-                    rv.addOnScrollListener(mLeftOSL);
-                }
-                else {
-                    if (action == MotionEvent.ACTION_UP && mLeftTracingOSL.getScrollY() == mLastY) {
-                        rv.removeOnScrollListener(mLeftOSL);
-                    }
-                }
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(final boolean disallowIntercept) {
-            }
-        });
 
         mRightRecyclerView.setAdapter(mRightAdapter = new DemoRecyclerAdapter(mRecyclerItems));
         mRightRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRightRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRightRecyclerView.addOnScrollListener(mRightTracingOSL);
-        mRightRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
 
-            private int mLastY;
-
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull final RecyclerView rv, @NonNull final
-            MotionEvent e) {
-                if (rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
-                    onTouchEvent(rv, e);
-                }
-                return Boolean.FALSE;
-            }
-
-            @Override
-            public void onTouchEvent(@NonNull final RecyclerView rv, @NonNull final MotionEvent e) {
-                final int action;
-                if ((action = e.getAction()) == MotionEvent.ACTION_DOWN && mLeftRecyclerView
-                        .getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
-                    Log.d("RIGHTLOG", "IF STATEMENT, added onScrollListener");
-                    mLastY = mRightTracingOSL.getScrollY();
-                    rv.addOnScrollListener(mRightOSL);
-                    rv.removeOnScrollListener(mRightTracingOSL);
-                    rv.addOnScrollListener(mRightTracingOSL);
-                }
-                else {
-                    Log.d("RIGHTLOG", "ELSE STATEMENT, getScrollY() is " + mRightTracingOSL.getScrollY() + " and mLastY is " + mLastY);
-                    if (action == MotionEvent.ACTION_UP && mRightTracingOSL.getScrollY() == mLastY) {
-                        Log.d("RIGHTLOG", "ELSE STATEMENT -> removed onScrollListener");
-                        rv.removeOnScrollListener(mRightOSL);
-                    }
-                }
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(final boolean disallowIntercept) {
-            }
-        });
+        AlignmentManager.join(mLeftRecyclerView, mRightRecyclerView);
     }
 
     private void initActionMenu() {
