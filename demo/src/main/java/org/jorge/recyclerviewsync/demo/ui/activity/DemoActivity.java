@@ -109,7 +109,7 @@ public final class DemoActivity extends AppCompatActivity {
         mRightRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRightRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        AlignmentManager.join(mLeftRecyclerView, mRightRecyclerView);
+        AlignmentManager.join(AligningRecyclerView.ALIGN_ORIENTATION_VERTICAL, mLeftRecyclerView, mRightRecyclerView);
     }
 
     private void initActionMenu() {
