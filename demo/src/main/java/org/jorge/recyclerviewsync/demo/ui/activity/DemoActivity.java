@@ -43,6 +43,9 @@ public final class DemoActivity extends AppCompatActivity {
 
     private RecyclerView.Adapter mFirstAdapter, mSecondAdapter;
 
+    @Bind(R.id.main_content)
+    View mainContent;
+
     @Bind(R.id.viewpager)
     ViewPager mViewPager;
 
@@ -83,6 +86,7 @@ public final class DemoActivity extends AppCompatActivity {
     private void initTabLayout() {
         mViewPager.setAdapter(mFragmentPagerAdapter = new TabFragmentPagerAdapter(getApplicationContext(), getSupportFragmentManager()));
 
+        mTabLayout.setTabsFromPagerAdapter(mFragmentPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -151,7 +155,7 @@ public final class DemoActivity extends AppCompatActivity {
             public void run() {
                 final TabFragment currentTabFragment = ((TabFragment) mFragmentPagerAdapter.getItem
                         (mTabLayout.getSelectedTabPosition()));
-                final List<DemoDataModel> selected = currentTabFragment.selectItems();
+                final List<DemoDataModel> selected = currentTabFragment.getRecyclerItems();
 
                 selected.add(DemoDataModelFactory.createDemoDataModel());
                 mFirstAdapter.notifyItemInserted(mFirstAdapter.getItemCount() - 1);
@@ -159,7 +163,7 @@ public final class DemoActivity extends AppCompatActivity {
                 if (selected.size() == 1) {
                     currentTabFragment.updateItemsVisibility(Boolean.TRUE);
                 }
-                Snackbar.make(findViewById(android.R.id.content), getApplicationContext()
+                Snackbar.make(mainContent, getApplicationContext()
                         .getResources().getQuantityString(R
                                 .plurals
                                 .snack_bar_text_items_added, 1), Snackbar
@@ -176,7 +180,7 @@ public final class DemoActivity extends AppCompatActivity {
             public void run() {
                 final TabFragment currentTabFragment = ((TabFragment) mFragmentPagerAdapter.getItem
                         (mTabLayout.getSelectedTabPosition()));
-                final List<DemoDataModel> selected = currentTabFragment.selectItems();
+                final List<DemoDataModel> selected = currentTabFragment.getRecyclerItems();
 
                 if (!selected.isEmpty()) {
                     selected.remove(selected.size() - 1);
@@ -185,7 +189,7 @@ public final class DemoActivity extends AppCompatActivity {
                     if (selected.isEmpty()) {
                         currentTabFragment.updateItemsVisibility(Boolean.FALSE);
                     }
-                    Snackbar.make(findViewById(android.R.id.content), R.string
+                    Snackbar.make(mainContent, R.string
                             .snack_bar_text_item_removed, Snackbar.LENGTH_SHORT)
                             .show();
                 }

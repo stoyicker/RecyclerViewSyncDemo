@@ -33,25 +33,22 @@ import butterknife.BindInt;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
-public class TabFragment extends Fragment {
+public abstract class TabFragment extends Fragment {
 
-    private static final String STATE_KEY_ITEMS_VERTICAL = DemoActivity.class.getName() + ".STATE_KEY_ITEMS_VERTICAL";
-    private static final String STATE_KEY_ITEMS_HORIZONTAL = DemoActivity.class.getName() + ".STATE_KEY_ITEMS_HORIZONTAL";
+    private static final String STATE_KEY_ITEMS = DemoActivity.class.getName() + ".STATE_KEY_ITEMS";
 
-    public static final String INSTANCE_KEY_PAGE = TabFragment.class.getName() + ".PAGE";
-
-    public static final int PAGE_VERTICAL = R.layout.tab_vertical, PAGE_HORIZONTAL = R.layout.tab_horizontal;
+    static final int PAGE_VERTICAL = R.layout.tab_vertical, PAGE_HORIZONTAL = R.layout.tab_horizontal;
 
     public RecyclerView.Adapter getFirstAdapter() {
         return mFirstAdapter;
     }
 
     public RecyclerView.Adapter getSecondAdapter() {
-        return mFirstAdapter;
+        return mSecondAdapter;
     }
 
     @IntDef({PAGE_VERTICAL, PAGE_HORIZONTAL})
-    public @interface Page {
+    @interface Page {
     }
 
     private final
@@ -78,27 +75,14 @@ public class TabFragment extends Fragment {
     @BindInt(R.integer.bulk_add_amount)
     int mBulkAddAmount;
 
-    private List<DemoDataModel> mRecyclerItemsVertical = new ArrayList<>(), mRecyclerItemsHorizontal = new ArrayList<>();
+    private List<DemoDataModel> mRecyclerItems = new ArrayList<>();
 
     @DebugLog
-    public TabFragment() {
-        final Bundle args = getArguments();
+    TabFragment(final @Page int page) {
+        mLayoutResource = page;
 
-        if (args != null) {
-            //noinspection ResourceType
-            mLayoutResource = args.getInt(INSTANCE_KEY_PAGE, PAGE_VERTICAL);
-            if (mLayoutResource != PAGE_VERTICAL && mLayoutResource != PAGE_HORIZONTAL) {
-                throw new IllegalArgumentException("The TabLayout only supports PAGE_HORIZONTAL AND PAGE_VERTICAL.");
-            }
-        }
-        else {
-            mLayoutResource = PAGE_VERTICAL;
-        }
-
-        final List<DemoDataModel> selected = selectItems();
-
-        mFirstAdapter = new DemoRecyclerAdapter(selected);
-        mSecondAdapter = new DemoRecyclerAdapter(selected);
+        mFirstAdapter = new DemoRecyclerAdapter(mRecyclerItems);
+        mSecondAdapter = new DemoRecyclerAdapter(mRecyclerItems);
     }
 
     @DebugLog
@@ -147,8 +131,7 @@ public class TabFragment extends Fragment {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                final List<DemoDataModel> selected = selectItems();
-                selected.clear();
+                mRecyclerItems.clear();
                 mFirstAdapter.notifyDataSetChanged();
                 mSecondAdapter.notifyDataSetChanged();
                 updateItemsVisibility(Boolean.FALSE);
@@ -162,13 +145,12 @@ public class TabFragment extends Fragment {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                final List<DemoDataModel> selected = selectItems();
-                final Integer initialIndex = selected.size() - 1, finalIndex = initialIndex + mBulkAddAmount;
+                final Integer initialIndex = mRecyclerItems.size() - 1, finalIndex = initialIndex + mBulkAddAmount;
                 for (Integer i = 0; i < mBulkAddAmount; i++)
-                    selected.add(DemoDataModelFactory.createDemoDataModel());
+                    mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
                 mFirstAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
                 mSecondAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
-                if (selected.size() == mBulkAddAmount) {
+                if (mRecyclerItems.size() == mBulkAddAmount) {
                     updateItemsVisibility(Boolean.TRUE);
                 }
                 Snackbar.make(mRootView, getContext().getResources().getQuantityString(R.plurals.snack_bar_text_items_added, mBulkAddAmount, mBulkAddAmount), Snackbar.LENGTH_SHORT)
@@ -199,8 +181,7 @@ public class TabFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull final Bundle outState) {
-        outState.putParcelableArrayList(STATE_KEY_ITEMS_VERTICAL, (ArrayList<? extends Parcelable>) mRecyclerItemsVertical);
-        outState.putParcelableArrayList(STATE_KEY_ITEMS_HORIZONTAL, (ArrayList<? extends Parcelable>) mRecyclerItemsHorizontal);
+        outState.putParcelableArrayList(STATE_KEY_ITEMS, (ArrayList<? extends Parcelable>) mRecyclerItems);
 
         super.onSaveInstanceState(outState);
     }
@@ -210,26 +191,16 @@ public class TabFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            final List<DemoDataModel> itemsVertical = savedInstanceState.getParcelableArrayList(STATE_KEY_ITEMS_VERTICAL), itemsHorizontal = savedInstanceState.getParcelableArrayList(STATE_KEY_ITEMS_HORIZONTAL);
+            final List<DemoDataModel> items = savedInstanceState.getParcelableArrayList
+                    (STATE_KEY_ITEMS);
 
-            if (itemsVertical != null) {
-                mRecyclerItemsVertical.addAll(itemsVertical);
-            }
-
-            if (itemsHorizontal != null) {
-                mRecyclerItemsHorizontal.addAll(itemsHorizontal);
+            if (items != null) {
+                mRecyclerItems.addAll(items);
             }
         }
     }
 
-    public List<DemoDataModel> selectItems() {
-        switch (mLayoutResource) {
-            case PAGE_VERTICAL:
-                return mRecyclerItemsVertical;
-            case PAGE_HORIZONTAL:
-                return mRecyclerItemsHorizontal;
-            default:
-                throw new IllegalArgumentException("Unsupported orientation.");
-        }
+    public List<DemoDataModel> getRecyclerItems() {
+        return mRecyclerItems;
     }
 }

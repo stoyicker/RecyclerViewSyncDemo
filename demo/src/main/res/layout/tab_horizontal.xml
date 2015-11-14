@@ -34,6 +34,5 @@
             android:scrollbars="vertical"/>
     </LinearLayout>
 
-
     <include layout="@layout/include_empty_view"/>
 </FrameLayout>

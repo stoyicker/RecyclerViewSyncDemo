@@ -1,12 +1,12 @@
 package org.jorge.recyclerviewsync.demo.ui.adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.jorge.recyclerviewsync.demo.R;
-import org.jorge.recyclerviewsync.demo.ui.fragment.TabFragment;
+import org.jorge.recyclerviewsync.demo.ui.fragment.HorizontalTabFragment;
+import org.jorge.recyclerviewsync.demo.ui.fragment.VerticalTabFragment;
 
 import hugo.weaving.DebugLog;
 
@@ -26,18 +26,15 @@ public class TabFragmentPagerAdapter extends FragmentStatePagerAdapter {
     @DebugLog
     @Override
     public Fragment getItem(final int position) {
-        final Bundle args = new Bundle();
         switch (position) {
             case 0:
                 if (mFragments[position] == null) {
-                    args.putInt(TabFragment.INSTANCE_KEY_PAGE, TabFragment.PAGE_VERTICAL);
-                    mFragments[position] = Fragment.instantiate(mContext, TabFragment.class.getName(), args);
+                    mFragments[position] = Fragment.instantiate(mContext, VerticalTabFragment.class.getName());
                 }
                 break;
             case 1:
                 if (mFragments[position] == null) {
-                    args.putInt(TabFragment.INSTANCE_KEY_PAGE, TabFragment.PAGE_HORIZONTAL);
-                    mFragments[position] = Fragment.instantiate(mContext, TabFragment.class.getName(), args);
+                    mFragments[position] = Fragment.instantiate(mContext, HorizontalTabFragment.class.getName());
                 }
                 break;
             default:
