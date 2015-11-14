@@ -3,7 +3,6 @@
     android:id="@+id/main_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,42 +19,17 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:titleTextAppearance="@style/ToolbarTitle"/>
 
-        <LinearLayout
-            android:id="@+id/recycler_view_container"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sliding_tabs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/standard_margin"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:splitMotionEvents="false"
-            android:visibility="gone"
-            tools:ignore="UnusedAttribute">
+            android:layout_height="wrap_content"
+            app:tabMode="scrollable"/>
 
-            <aligningrecyclerview.AligningRecyclerView
-                android:id="@+id/left_recycler_view"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fadeScrollbars="true"
-                android:scrollbars="vertical"/>
-
-            <aligningrecyclerview.AligningRecyclerView
-                android:id="@+id/right_recycler_view"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fadeScrollbars="true"
-                android:scrollbars="vertical"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@android:id/empty"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?android:attr/windowBackground"
-            android:gravity="center"
-            android:text="@string/no_items"
-            android:textColor="@android:color/black"/>
+            android:layout_height="0px"
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout

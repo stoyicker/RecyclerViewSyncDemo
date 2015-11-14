@@ -1,6 +1,5 @@
 package org.jorge.recyclerviewsync.demo.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -8,13 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -25,16 +24,13 @@ import android.view.View;
 import org.jorge.recyclerviewsync.demo.R;
 import org.jorge.recyclerviewsync.demo.datamodel.DemoDataModel;
 import org.jorge.recyclerviewsync.demo.datamodel.DemoDataModelFactory;
-import org.jorge.recyclerviewsync.demo.ui.adapter.DemoRecyclerAdapter;
+import org.jorge.recyclerviewsync.demo.ui.adapter.TabFragmentPagerAdapter;
+import org.jorge.recyclerviewsync.demo.ui.fragment.TabFragment;
 import org.jorge.recyclerviewsync.demo.ui.widget.FloatingActionMenu;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import aligningrecyclerview.AligningRecyclerView;
-import aligningrecyclerview.AlignmentManager;
 import butterknife.Bind;
-import butterknife.BindInt;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -44,33 +40,20 @@ import butterknife.OnClick;
  */
 public final class DemoActivity extends AppCompatActivity {
 
-    private static final String KEY_ITEMS = "KEY_ITEMS";
-    private List<DemoDataModel> mRecyclerItems = new ArrayList<>();
+    private FragmentPagerAdapter mFragmentPagerAdapter;
 
-    @Bind(R.id.left_recycler_view)
-    AligningRecyclerView mLeftRecyclerView;
-    @Bind(R.id.right_recycler_view)
-    AligningRecyclerView mRightRecyclerView;
+    private RecyclerView.Adapter mFirstAdapter, mSecondAdapter;
 
-    RecyclerView.Adapter mLeftAdapter, mRightAdapter;
+    @Bind(R.id.viewpager)
+    ViewPager mViewPager;
 
-    @Bind(android.R.id.empty)
-    View mEmptyView;
-
-    @Bind(R.id.main_content)
-    View mRootView;
+    @Bind(R.id.sliding_tabs)
+    TabLayout mTabLayout;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-
-    @Bind(R.id.recycler_view_container)
-    View mRecyclerViewContainer;
-
     @Bind(R.id.action_menu)
     FloatingActionMenu mActionMenu;
-
-    @BindInt(R.integer.bulk_add_amount)
-    int mBulkAddAmount;
 
     Resources mResources;
 
@@ -86,7 +69,7 @@ public final class DemoActivity extends AppCompatActivity {
         mResources = getApplicationContext().getResources();
 
         initActionBar();
-        initRecyclerViews();
+        initTabLayout();
         initActionMenu();
     }
 
@@ -98,31 +81,43 @@ public final class DemoActivity extends AppCompatActivity {
         }
     }
 
-    private void initRecyclerViews() {
-        final Context context = getApplicationContext();
+    private void initTabLayout() {
+        mViewPager.setAdapter(mFragmentPagerAdapter = new TabFragmentPagerAdapter(getApplicationContext(), getSupportFragmentManager()));
 
-        mLeftRecyclerView.setAdapter(mLeftAdapter = new DemoRecyclerAdapter(mRecyclerItems));
-        mLeftRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mLeftRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(final TabLayout.Tab tab) {
+                final TabFragment currentTabFragment = ((TabFragment) mFragmentPagerAdapter.getItem
+                        (mTabLayout.getSelectedTabPosition()));
 
-        mRightRecyclerView.setAdapter(mRightAdapter = new DemoRecyclerAdapter(mRecyclerItems));
-        mRightRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mRightRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                mFirstAdapter = currentTabFragment.getFirstAdapter();
+                mSecondAdapter = currentTabFragment.getSecondAdapter();
+            }
 
-        AlignmentManager.join(AligningRecyclerView.ALIGN_ORIENTATION_VERTICAL, mLeftRecyclerView, mRightRecyclerView);
+            @Override
+            public void onTabUnselected(final TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(final TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     private void initActionMenu() {
         mActionMenu.setOnItemClickListener(0, new View.OnClickListener() {
             @Override
             public void onClick(@NonNull final View v) {
-                clearAllItems();
+                ((TabFragment) mFragmentPagerAdapter.getItem(mTabLayout.getSelectedTabPosition())).clearAllItems();
             }
         });
         mActionMenu.setOnItemClickListener(1, new View.OnClickListener() {
             @Override
             public void onClick(@NonNull final View v) {
-                bulkAddItems();
+                ((TabFragment) mFragmentPagerAdapter.getItem(mTabLayout.getSelectedTabPosition())).bulkAddItems();
             }
         });
     }
@@ -132,9 +127,16 @@ public final class DemoActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
 
         if (mResources.getConfiguration().orientation != newConfig.orientation) {
-            mLeftAdapter.notifyDataSetChanged();
-            mRightAdapter.notifyDataSetChanged();
+            mFirstAdapter.notifyDataSetChanged();
+            mSecondAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar_activity_demo, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @OnClick(R.id.fab_add)
@@ -142,13 +144,20 @@ public final class DemoActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
-                mLeftAdapter.notifyItemInserted(mLeftAdapter.getItemCount() - 1);
-                mRightAdapter.notifyItemInserted(mRightAdapter.getItemCount() - 1);
-                if (mRecyclerItems.size() == 1) {
-                    updateItemsVisibility(Boolean.TRUE);
+                final TabFragment currentTabFragment = ((TabFragment) mFragmentPagerAdapter.getItem
+                        (mTabLayout.getSelectedTabPosition()));
+                final List<DemoDataModel> selected = currentTabFragment.selectItems();
+
+                selected.add(DemoDataModelFactory.createDemoDataModel());
+                mFirstAdapter.notifyItemInserted(mFirstAdapter.getItemCount() - 1);
+                mSecondAdapter.notifyItemInserted(mSecondAdapter.getItemCount() - 1);
+                if (selected.size() == 1) {
+                    currentTabFragment.updateItemsVisibility(Boolean.TRUE);
                 }
-                Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, 1), Snackbar
+                Snackbar.make(findViewById(android.R.id.content), getApplicationContext()
+                        .getResources().getQuantityString(R
+                                .plurals
+                                .snack_bar_text_items_added, 1), Snackbar
                         .LENGTH_SHORT)
                         .show();
             }
@@ -160,95 +169,23 @@ public final class DemoActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                if (!mRecyclerItems.isEmpty()) {
-                    mRecyclerItems.remove(mRecyclerItems.size() - 1);
-                    mLeftAdapter.notifyItemRemoved(mLeftAdapter.getItemCount());
-                    mRightAdapter.notifyItemRemoved(mRightAdapter.getItemCount());
-                    if (mRecyclerItems.isEmpty()) {
-                        updateItemsVisibility(Boolean.FALSE);
+                final TabFragment currentTabFragment = ((TabFragment) mFragmentPagerAdapter.getItem
+                        (mTabLayout.getSelectedTabPosition()));
+                final List<DemoDataModel> selected = currentTabFragment.selectItems();
+
+                if (!selected.isEmpty()) {
+                    selected.remove(selected.size() - 1);
+                    mFirstAdapter.notifyItemRemoved(mFirstAdapter.getItemCount());
+                    mSecondAdapter.notifyItemRemoved(mSecondAdapter.getItemCount());
+                    if (selected.isEmpty()) {
+                        currentTabFragment.updateItemsVisibility(Boolean.FALSE);
                     }
-                    Snackbar.make(mRootView, R.string.snack_bar_text_item_removed, Snackbar.LENGTH_SHORT)
+                    Snackbar.make(findViewById(android.R.id.content), R.string
+                            .snack_bar_text_item_removed, Snackbar.LENGTH_SHORT)
                             .show();
                 }
             }
         });
-    }
-
-    private void clearAllItems() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                mRecyclerItems.clear();
-                mLeftAdapter.notifyDataSetChanged();
-                mRightAdapter.notifyDataSetChanged();
-                updateItemsVisibility(Boolean.FALSE);
-                Snackbar.make(mRootView, R.string.snack_bar_text_items_cleared, Snackbar.LENGTH_SHORT)
-                        .show();
-            }
-        });
-    }
-
-    private void bulkAddItems() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                final Integer initialIndex = mRecyclerItems.size() - 1, finalIndex =
-                        initialIndex + mBulkAddAmount;
-                for (Integer i = 0; i < mBulkAddAmount; i++)
-                    mRecyclerItems.add(DemoDataModelFactory.createDemoDataModel());
-                mLeftAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
-                mRightAdapter.notifyItemRangeInserted(initialIndex, finalIndex);
-                if (mRecyclerItems.size() == mBulkAddAmount) {
-                    updateItemsVisibility(Boolean.TRUE);
-                }
-                Snackbar.make(mRootView, mResources.getQuantityString(R.plurals.snack_bar_text_items_added, mBulkAddAmount, mBulkAddAmount), Snackbar.LENGTH_SHORT)
-                        .show();
-            }
-        });
-    }
-
-    private void updateItemsVisibility(final boolean recyclerViewHasItems) {
-        if (recyclerViewHasItems) {
-            if (mEmptyView.getVisibility() != View.GONE) {
-                mEmptyView.setVisibility(View.GONE);
-            }
-            if (mRecyclerViewContainer.getVisibility() != View.VISIBLE) {
-                mRecyclerViewContainer.setVisibility(View.VISIBLE);
-            }
-        }
-        else {
-            if (mEmptyView.getVisibility() != View.VISIBLE) {
-                mEmptyView.setVisibility(View.VISIBLE);
-            }
-            if (mRecyclerViewContainer.getVisibility() != View.GONE) {
-                mRecyclerViewContainer.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull final Bundle outState) {
-        outState.putParcelableArrayList(KEY_ITEMS, (ArrayList<? extends Parcelable>) mRecyclerItems);
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
-        final List<DemoDataModel> items = savedInstanceState.getParcelableArrayList(KEY_ITEMS);
-
-        if (items != null) {
-            mRecyclerItems.addAll(items);
-        }
-
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
-        final MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_activity_demo, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

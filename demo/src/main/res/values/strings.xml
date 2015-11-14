@@ -10,4 +10,6 @@
         <item quantity="one">One item added.</item>
         <item quantity="other">%d items added.</item>
     </plurals>
+    <string name="tab_name_vertical">Vertical</string>
+    <string name="tab_name_horizontal">Horizontal</string>
 </resources>
