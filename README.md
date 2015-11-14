@@ -4,7 +4,7 @@ RecyclerViewSyncDemo
 
 Demo project for how to sync the scrolling of two (applicable to as many as desired) RecyclerViews.
 
-Minimum required API level: 7 (as RecyclerView).
+Minimum required API level: 9.
 
 Minimum recommended API level: 11.
 
