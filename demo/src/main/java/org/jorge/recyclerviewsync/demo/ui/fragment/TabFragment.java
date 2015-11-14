@@ -57,7 +57,7 @@ public class TabFragment extends Fragment {
     @Page
     int mLayoutResource;
 
-    @Bind(android.R.id.empty)
+    @Bind(R.id.empty)
     View mEmptyView;
 
     @Bind(R.id.fragment_main_content)
@@ -69,7 +69,7 @@ public class TabFragment extends Fragment {
     @Bind(R.id.right_recycler_view)
     AligningRecyclerView mSecondRecyclerView;
 
-    RecyclerView.Adapter mFirstAdapter, mSecondAdapter;
+    private final RecyclerView.Adapter mFirstAdapter, mSecondAdapter;
 
     @Bind(R.id.recycler_view_container)
     View mRecyclerViewContainer;
@@ -92,6 +92,11 @@ public class TabFragment extends Fragment {
         else {
             mLayoutResource = PAGE_VERTICAL;
         }
+
+        final List<DemoDataModel> selected = selectItems();
+
+        mFirstAdapter = new DemoRecyclerAdapter(selected);
+        mSecondAdapter = new DemoRecyclerAdapter(selected);
     }
 
     @Nullable
@@ -112,11 +117,10 @@ public class TabFragment extends Fragment {
     private void initRecyclerViews(final @TabFragment.Page int page) {
         final Context context = getActivity().getApplicationContext();
 
-        final List<DemoDataModel> selected = selectItems();
-        mFirstRecyclerView.setAdapter(mFirstAdapter = new DemoRecyclerAdapter(selected));
+        mFirstRecyclerView.setAdapter(mFirstAdapter);
         mFirstRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mSecondRecyclerView.setAdapter(mSecondAdapter = new DemoRecyclerAdapter(selected));
+        mSecondRecyclerView.setAdapter(mSecondAdapter);
         mSecondRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         final @AligningRecyclerView.AlignOrientation int orientation;

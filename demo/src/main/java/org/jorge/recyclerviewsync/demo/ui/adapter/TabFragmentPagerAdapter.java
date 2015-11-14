@@ -3,12 +3,12 @@ package org.jorge.recyclerviewsync.demo.ui.adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.jorge.recyclerviewsync.demo.R;
 import org.jorge.recyclerviewsync.demo.ui.fragment.TabFragment;
 
-public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
+public class TabFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private final String[] mTabNames;
     private Context mContext;

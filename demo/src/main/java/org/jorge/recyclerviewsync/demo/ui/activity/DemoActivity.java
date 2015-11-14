@@ -10,7 +10,6 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +39,7 @@ import butterknife.OnClick;
  */
 public final class DemoActivity extends AppCompatActivity {
 
-    private FragmentPagerAdapter mFragmentPagerAdapter;
+    private TabFragmentPagerAdapter mFragmentPagerAdapter;
 
     private RecyclerView.Adapter mFirstAdapter, mSecondAdapter;
 
@@ -88,11 +87,7 @@ public final class DemoActivity extends AppCompatActivity {
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(final TabLayout.Tab tab) {
-                final TabFragment currentTabFragment = ((TabFragment) mFragmentPagerAdapter.getItem
-                        (mTabLayout.getSelectedTabPosition()));
-
-                mFirstAdapter = currentTabFragment.getFirstAdapter();
-                mSecondAdapter = currentTabFragment.getSecondAdapter();
+                updateAdapterReferences();
             }
 
             @Override
@@ -105,6 +100,16 @@ public final class DemoActivity extends AppCompatActivity {
 
             }
         });
+
+        updateAdapterReferences();
+    }
+
+    private void updateAdapterReferences() {
+        final TabFragment currentTabFragment = ((TabFragment) mFragmentPagerAdapter.getItem
+                (mTabLayout.getSelectedTabPosition()));
+
+        mFirstAdapter = currentTabFragment.getFirstAdapter();
+        mSecondAdapter = currentTabFragment.getSecondAdapter();
     }
 
     private void initActionMenu() {
