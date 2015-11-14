@@ -31,6 +31,7 @@ import aligningrecyclerview.AlignmentManager;
 import butterknife.Bind;
 import butterknife.BindInt;
 import butterknife.ButterKnife;
+import hugo.weaving.DebugLog;
 
 public class TabFragment extends Fragment {
 
@@ -79,6 +80,7 @@ public class TabFragment extends Fragment {
 
     private List<DemoDataModel> mRecyclerItemsVertical = new ArrayList<>(), mRecyclerItemsHorizontal = new ArrayList<>();
 
+    @DebugLog
     public TabFragment() {
         final Bundle args = getArguments();
 
@@ -99,6 +101,7 @@ public class TabFragment extends Fragment {
         mSecondAdapter = new DemoRecyclerAdapter(selected);
     }
 
+    @DebugLog
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
@@ -108,6 +111,7 @@ public class TabFragment extends Fragment {
         return view;
     }
 
+    @DebugLog
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -173,6 +177,7 @@ public class TabFragment extends Fragment {
         });
     }
 
+    @DebugLog
     public void updateItemsVisibility(final boolean recyclerViewHasItems) {
         if (recyclerViewHasItems) {
             if (mEmptyView.getVisibility() != View.GONE) {
