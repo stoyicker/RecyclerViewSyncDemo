@@ -2,7 +2,7 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:colorBackground">@android:color/white</item>
         <item name="colorAccent">@color/material_indigo_500</item>
         <item name="colorPrimary">@color/material_indigo_a200</item>
     </style>
@@ -30,5 +30,9 @@
 
     <style name="AmberAccent">
         <item name="colorAccent">@color/material_amber_500</item>
+    </style>
+
+    <style name="RecyclerViewSyncDemoTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@android:color/white</item>
     </style>
 </resources>
