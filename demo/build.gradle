@@ -10,8 +10,8 @@ android {
             applicationId "org.jorge.recyclerviewsyncdemo"
             minSdkVersion 9
             targetSdkVersion 23
-            versionCode 4
-            versionName "2.0.0"
+            versionCode 5
+            versionName "2.0.1"
             multiDexEnabled = false
         }
     }
@@ -30,11 +30,13 @@ android {
         //noinspection GroovyAssignabilityCheck
         debug {
             minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled true
         }
 
         release {
-            minifyEnabled true
-            proguardFiles 'proguard-rules.pro'
+            minifyEnabled false
+            shrinkResources true
             //noinspection GroovyAssignabilityCheck
             signingConfig signingConfigs.release
             zipAlignEnabled true
