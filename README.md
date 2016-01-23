@@ -2,7 +2,7 @@ RecyclerViewSyncDemo
 ====================
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RecyclerViewSyncDemo-green.svg?style=flat)](https://android-arsenal.com/details/3/2162)
 
-Demo project for how to sync the scrolling of two (applicable to as many as desired) RecyclerViews.
+Demo project showing how to sync the scrolling of two (applicable to as many as desired) RecyclerViews.
 
 Minimum required API level: 9.
 
@@ -12,6 +12,6 @@ You can read about some of the details on how and why the code works in [this SO
 encouraged to check the [library repository](https://github.com/Stoyicker/AligningRecyclerView) 
 to see the more information.
 
-[![Get it on Google Play!](https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png "Get it on Google Play")](https://play.google.com/store/apps/details?id=org.jorge.recyclerviewsyncdemo)
+<a href="https://play.google.com/store/apps/details?id=org.jorge.recyclerviewsyncdemo><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" width="185" height="60"/></a>
 
 <img src="demo/resources/screen_recording_demo.gif" />
