@@ -17,7 +17,7 @@ allprojects {
     }
 }
 
-def gradleVersion = '2.8-rc-2'
+def gradleVersion = '2.12'
 
 task updateWrapper(type: Wrapper) {
     distributionUrl = "https\\://services.gradle.org/distributions/gradle-${gradleVersion}-all" +

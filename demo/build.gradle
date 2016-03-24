@@ -65,9 +65,9 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-annotations:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:support-annotations:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.android.support:design:23.2.1'
 
     compile 'com.jakewharton:butterknife:7.0.1'
 
