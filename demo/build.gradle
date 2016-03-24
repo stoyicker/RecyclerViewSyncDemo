@@ -36,7 +36,7 @@ android {
 
         release {
             minifyEnabled false
-            shrinkResources true
+            shrinkResources false
             //noinspection GroovyAssignabilityCheck
             signingConfig signingConfigs.release
             zipAlignEnabled true
@@ -66,10 +66,10 @@ repositories {
 
 dependencies {
     compile 'com.android.support:support-annotations:23.2.1'
-    compile 'com.android.support:recyclerview-v7:23.2.1'
-    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
 
     compile 'com.jakewharton:butterknife:7.0.1'
 
-    compile 'com.github.stoyicker:aligningrecyclerview:0.9'
+    compile 'com.github.stoyicker:aligningrecyclerview:1.0'
 }
