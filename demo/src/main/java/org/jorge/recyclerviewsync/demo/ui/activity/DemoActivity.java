@@ -91,6 +91,7 @@ public final class DemoActivity extends AppCompatActivity {
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(final TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
                 updateAdapterReferences();
             }
 
